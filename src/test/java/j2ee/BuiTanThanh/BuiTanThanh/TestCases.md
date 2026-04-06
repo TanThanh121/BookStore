@@ -317,3 +317,30 @@
 | TC_BTT_018 | Xác minh đổi mật khẩu bị từ chối khi nhập sai mật khẩu hiện tại | P1 | Negative | Tài khoản user hợp lệ đã đăng nhập | currentPassword: "WrongCurrentPass", newPassword: "NewPass@123" | Hiển thị lỗi "Current password is incorrect", mật khẩu không thay đổi | Script: login user → `/profile` → điền sai currentPassword → submit → verify error message |
 | TC_BTT_019 | Xác minh truy cập admin bị từ chối khi đăng nhập bằng tài khoản không có role ADMIN | P1 | Negative | Tài khoản user thường đã đăng nhập | Tài khoản không có role ADMIN | Hệ thống chuyển hướng về `/error/403` hoặc hiển thị trang Forbidden | Script: login user thường → truy cập `/admin` → verify URL contains `/403` or page shows Forbidden |
 | TC_BTT_020 | Xác minh redirect về trang login khi truy cập trang cần xác thực chưa đăng nhập | P1 | Negative | Chưa đăng nhập (session không tồn tại) | None | URL chuyển thành `/login`, nội dung trang bảo mật không hiển thị | Script: đảm bảo chưa đăng nhập → truy cập `/profile` → verify URL contains `/login` |
+
+---
+
+## Test Cases Summary
+
+| TC ID | Module | Test Case Title | Priority | Type | Status | Assigned To | Created Date | Due Date |
+|-------|--------|-----------------|----------|------|--------|-------------|--------------|----------|
+| TC_BTT_001 | Registration | Xác minh đăng ký tài khoản thành công khi nhập thông tin hợp lệ | P1 | Positive | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_002 | Registration | Xác minh đăng ký bị từ chối khi username đã tồn tại | P1 | Negative | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_003 | Registration | Xác minh đăng ký bị từ chối khi email đã được sử dụng | P1 | Negative | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_004 | Registration | Xác minh đăng ký bị từ chối khi số điện thoại không đủ 10 chữ số | P2 | Negative | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_005 | Book Management | Xác minh dashboard admin hiển thị đúng số liệu thống kê khi đăng nhập admin | P1 | Positive | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_006 | Book Management | Xác minh thêm sách mới thành công khi điền đầy đủ thông tin hợp lệ | P1 | Positive | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_007 | Book Management | Xác minh thêm sách bị từ chối khi thiếu trường tiêu đề | P2 | Negative | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_008 | Book Management | Xác minh cập nhật thông tin sách thành công khi thay đổi giá | P1 | Positive | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_009 | Book Management | Xác minh vô hiệu hóa sách thành công khi nhấn nút xóa trên sách đang active | P1 | Positive | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_010 | Book Management | Xác minh kích hoạt lại sách thành công khi sách đang ở trạng thái inactive | P2 | Positive | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_011 | Book Management | Xác minh tìm kiếm sách hiển thị đúng kết quả khi nhập từ khóa hợp lệ | P2 | Positive | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_012 | Category Management | Xác minh thêm danh mục mới thành công khi điền tên hợp lệ | P1 | Positive | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_013 | Category Management | Xác minh cập nhật tên danh mục thành công khi nhập tên mới | P2 | Positive | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_014 | Category Management | Xác minh xóa danh mục thành công khi danh mục không có sách liên kết | P2 | Positive | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_015 | User Profile | Xác minh hồ sơ người dùng hiển thị đúng thông tin khi đăng nhập | P2 | Positive | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_016 | User Profile | Xác minh cập nhật hồ sơ thành công khi thay đổi tên và số điện thoại | P2 | Positive | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_017 | User Profile | Xác minh đổi mật khẩu thành công khi nhập đúng mật khẩu hiện tại | P1 | Positive | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_018 | User Profile | Xác minh đổi mật khẩu bị từ chối khi nhập sai mật khẩu hiện tại | P1 | Negative | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_019 | Security | Xác minh truy cập admin bị từ chối khi đăng nhập bằng tài khoản không có role ADMIN | P1 | Negative | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |
+| TC_BTT_020 | Security | Xác minh redirect về trang login khi truy cập trang cần xác thực chưa đăng nhập | P1 | Negative | | Bùi Tấn Thành | 2026-03-24 | 2026-04-07 |

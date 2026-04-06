@@ -289,3 +289,30 @@
 - Pass: ___
 - Fail: ___
 - Blocked: ___
+
+---
+
+## Test Cases Summary
+
+| TC ID | Module | Test Case Title | Priority | Type | Status | Assigned To | Created Date | Due Date |
+|-------|--------|-----------------|----------|------|--------|-------------|--------------|----------|
+| TC_NTP_001 | Registration | Xác minh đăng ký tài khoản thành công khi nhập đầy đủ thông tin hợp lệ | P1 | Positive | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_002 | Registration | Xác minh đăng ký bị từ chối khi username đã tồn tại trong hệ thống | P1 | Negative | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_003 | Registration | Xác minh đăng ký bị từ chối khi để trống trường password bắt buộc | P1 | Negative | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_004 | Registration | Xác minh đăng ký bị từ chối khi email không đúng định dạng | P2 | Negative | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_005 | Authentication | Xác minh đăng nhập thành công khi nhập đúng username và password | P1 | Positive | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_006 | Authentication | Xác minh đăng nhập bị từ chối khi nhập sai mật khẩu | P1 | Negative | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_007 | Book Browsing | Xác minh trang danh sách sách hiển thị đầy đủ sách khi truy cập /books | P1 | Positive | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_008 | Book Browsing | Xác minh tìm kiếm sách hiển thị kết quả phù hợp khi nhập từ khóa hợp lệ | P2 | Positive | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_009 | Book Browsing | Xác minh tìm kiếm hiển thị danh sách trống khi từ khóa không tồn tại | P2 | Negative | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_010 | Book Browsing | Xác minh lọc sách theo danh mục chỉ hiển thị sách đúng danh mục khi chọn filter | P2 | Positive | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_011 | Book Browsing | Xác minh trang chi tiết sách hiển thị đầy đủ thông tin khi truy cập theo ID | P2 | Positive | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_012 | Book Browsing | Xác minh sắp xếp sách theo giá tăng dần hiển thị đúng thứ tự khi chọn price_asc | P3 | Positive | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_013 | Cart | Xác minh thêm sách vào giỏ hàng thành công khi nhấn nút thêm trên trang sách | P1 | Positive | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_014 | Cart | Xác minh cập nhật số lượng sách trong giỏ thành công khi thay đổi quantity | P2 | Positive | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_015 | Cart | Xác minh xóa một sản phẩm khỏi giỏ hàng thành công khi nhấn nút xóa | P2 | Positive | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_016 | Cart | Xác minh xóa toàn bộ giỏ hàng hiển thị giỏ trống khi nhấn nút xóa tất cả | P3 | Positive | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_017 | Checkout | Xác minh thanh toán thành công khi điền đầy đủ thông tin và đồng ý điều khoản | P1 | Positive | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_018 | Checkout | Xác minh checkout redirect về /cart khi giỏ hàng trống | P1 | Negative | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_019 | Checkout | Xác minh checkout bị từ chối khi không đồng ý điều khoản và điều kiện | P2 | Negative | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |
+| TC_NTP_020 | Order History | Xác minh trang lịch sử đơn hàng hiển thị đúng danh sách khi user đã có đơn | P2 | Positive | | Nguyễn Thành Phúc | 2026-03-24 | 2026-04-07 |

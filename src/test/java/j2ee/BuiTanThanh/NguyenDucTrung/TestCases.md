@@ -325,3 +325,30 @@
 - Pass: ___
 - Fail: ___
 - Blocked: ___
+
+---
+
+## Test Cases Summary
+
+| TC ID | Module | Test Case Title | Priority | Type | Status | Assigned To | Created Date | Due Date |
+|-------|--------|-----------------|----------|------|--------|-------------|--------------|----------|
+| TC_NDT_001 | BookService | Xác minh getAllBooks trả về đúng số lượng sách khi áp dụng phân trang hợp lệ | P1 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_002 | BookService | Xác minh getBookById trả về Optional chứa sách khi ID tồn tại và sách đang active | P1 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_003 | BookService | Xác minh getBookById trả về Optional.empty() khi ID không tồn tại trong DB | P1 | Negative | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_004 | BookService | Xác minh addBook lưu sách mới thành công khi dữ liệu đầu vào hợp lệ | P1 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_005 | BookService | Xác minh updateBook cập nhật đúng thông tin sách khi truyền dữ liệu mới | P1 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_006 | BookService | Xác minh updateBook giữ nguyên ảnh cũ khi trường image truyền vào là rỗng | P2 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_007 | BookService | Xác minh deleteBookById chuyển sách sang inactive khi ID hợp lệ (soft delete) | P1 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_008 | BookService | Xác minh activateBookById chuyển sách sang active thành công khi sách đang inactive | P2 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_009 | BookService | Xác minh searchActiveBook trả về đúng kết quả khi tìm theo từ khóa hợp lệ | P2 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_010 | BookService | Xác minh getBooksWithFilters lọc đúng sách khi kết hợp category và từ khóa | P2 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_011 | BookService | Xác minh deleteBookById không ném ngoại lệ khi ID không tồn tại trong DB | P2 | Negative | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_012 | BookService | Xác minh countBooks trả về đúng tổng số sách hiện có trong hệ thống | P3 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_013 | CategoryService | Xác minh getAllCategories trả về đầy đủ danh sách danh mục khi DB có dữ liệu | P1 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_014 | CategoryService | Xác minh addCategory lưu danh mục mới thành công khi tên hợp lệ | P1 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_015 | CategoryService | Xác minh updateCategory cập nhật tên danh mục thành công khi truyền tên mới | P2 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_016 | CategoryService | Xác minh deleteCategory xóa danh mục thành công khi không có sách liên kết | P2 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_017 | CartService | Xác minh getCart tạo cart mới rỗng khi session chưa có cart | P1 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_018 | CartService | Xác minh getCart trả về cart cũ khi session đã tồn tại cart | P1 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_019 | CartService | Xác minh getSumPrice tính tổng tiền đúng khi giỏ hàng có 2 sách | P1 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |
+| TC_NDT_020 | CartService | Xác minh getSumQuantity tính tổng số lượng đúng khi giỏ hàng có nhiều mục | P2 | Positive | | Nguyễn Đức Trung | 2026-03-24 | 2026-04-07 |

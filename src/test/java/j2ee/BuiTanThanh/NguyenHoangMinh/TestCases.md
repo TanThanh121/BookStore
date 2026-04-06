@@ -323,3 +323,30 @@
 - Pass: ___
 - Fail: ___
 - Blocked: ___
+
+---
+
+## Test Cases Summary
+
+| TC ID | Module | Test Case Title | Priority | Type | Status | Assigned To | Created Date | Due Date |
+|-------|--------|-----------------|----------|------|--------|-------------|--------------|----------|
+| TC_NHM_001 | UserService | Xác minh save mã hóa mật khẩu bằng BCrypt trước khi lưu user mới vào DB | P1 | Positive | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_002 | UserService | Xác minh findByUsername trả về Optional chứa user khi username tồn tại | P1 | Positive | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_003 | UserService | Xác minh findByUsername trả về Optional.empty() khi username không tồn tại | P1 | Negative | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_004 | UserService | Xác minh setDefaultRole gán đúng role USER cho user mới khi chưa có role | P1 | Positive | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_005 | UserService | Xác minh updateProfile cập nhật thông tin thành công khi dữ liệu hợp lệ | P1 | Positive | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_006 | UserService | Xác minh updateProfile ném IllegalArgumentException khi email đã được dùng bởi user khác | P2 | Negative | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_007 | UserService | Xác minh changePassword cập nhật mật khẩu thành công khi nhập đúng mật khẩu hiện tại | P1 | Positive | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_008 | UserService | Xác minh changePassword ném IllegalArgumentException khi nhập sai mật khẩu hiện tại | P1 | Negative | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_009 | UserService | Xác minh changePassword ném IllegalArgumentException khi mật khẩu xác nhận không khớp | P1 | Negative | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_010 | UserService | Xác minh countUsers trả về đúng tổng số người dùng trong hệ thống | P3 | Positive | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_011 | InvoiceService | Xác minh getInvoicesByUsername trả về đúng danh sách đơn hàng khi user đã có đơn | P1 | Positive | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_012 | InvoiceService | Xác minh getInvoicesByUsername trả về danh sách rỗng khi user chưa đặt hàng | P2 | Negative | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_013 | InvoiceService | Xác minh getInvoiceById trả về Optional chứa invoice khi ID tồn tại | P1 | Positive | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_014 | InvoiceService | Xác minh getInvoiceById trả về Optional.empty() khi ID không tồn tại | P1 | Negative | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_015 | InvoiceService | Xác minh calculateInvoiceTotal tính đúng tổng tiền khi invoice có nhiều item | P1 | Positive | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_016 | InvoiceService | Xác minh countInvoices trả về đúng tổng số đơn hàng trong hệ thống | P3 | Positive | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_017 | Validator | Xác minh ValidUsernameValidator trả về true khi username chỉ chứa chữ và số | P2 | Positive | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_018 | Validator | Xác minh ValidUsernameValidator trả về false khi username chứa ký tự đặc biệt | P2 | Negative | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_019 | Validator | Xác minh ValidCategoryIdValidator trả về true khi category hợp lệ tồn tại trong DB | P2 | Positive | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |
+| TC_NHM_020 | Validator | Xác minh ValidCategoryIdValidator trả về false khi category là null | P2 | Negative | | Nguyễn Hoàng Minh | 2026-03-24 | 2026-04-07 |

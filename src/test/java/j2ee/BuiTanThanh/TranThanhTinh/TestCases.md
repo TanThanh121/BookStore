@@ -326,3 +326,30 @@
 - Pass: ___
 - Fail: ___
 - Blocked: ___
+
+---
+
+## Test Cases Summary
+
+| TC ID | Module | Test Case Title | Priority | Type | Status | Assigned To | Created Date | Due Date |
+|-------|--------|-----------------|----------|------|--------|-------------|--------------|----------|
+| TC_TTT_001 | Authentication | Xác minh đăng nhập thành công khi nhập đúng username và password hợp lệ | P1 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_002 | Authentication | Xác minh đăng nhập bị từ chối khi nhập sai mật khẩu | P1 | Negative | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_003 | Search & Filter | Xác minh tìm kiếm sách hiển thị kết quả phù hợp khi nhập từ khóa hợp lệ | P2 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_004 | Search & Filter | Xác minh lọc sách theo danh mục hiển thị đúng URL khi click link danh mục | P2 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_005 | Search & Filter | Xác minh sắp xếp sách theo giá tăng dần hiển thị đúng thứ tự khi chọn price_asc | P3 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_006 | Cart | Xác minh thêm sách vào giỏ hàng thành công khi nhấn nút thêm | P1 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_007 | Cart | Xác minh cập nhật số lượng sách trong giỏ thành công khi gọi updateCart | P2 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_008 | Cart | Xác minh xóa một sản phẩm khỏi giỏ thành công khi nhấn nút xóa | P2 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_009 | Cart | Xác minh xóa toàn bộ giỏ hàng thành công khi gọi clearCart | P3 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_010 | Cart | Xác minh tổng tiền giỏ hàng hiển thị đúng định dạng khi có sách trong giỏ | P1 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_011 | Checkout | Xác minh trang checkout hiển thị form billing khi giỏ hàng có sách | P1 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_012 | Checkout | Xác minh checkout redirect về /cart khi giỏ hàng trống | P1 | Negative | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_013 | Checkout | Xác minh đặt hàng thành công khi điền đầy đủ thông tin và đồng ý điều khoản | P1 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_014 | Checkout | Xác minh checkout bị từ chối khi không đồng ý điều khoản và điều kiện | P2 | Negative | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_015 | Order History | Xác minh trang lịch sử đơn hàng hiển thị đúng khi user đã đặt hàng | P2 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_016 | Order History | Xác minh xem chi tiết đơn hàng thành công khi click link từ lịch sử đơn | P2 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_017 | Order History | Xác minh truy cập đơn hàng của người khác bị từ chối khi không phải chủ đơn | P1 | Negative | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_018 | Order History | Xác minh tổng tiền đã chi hiển thị đúng định dạng trên trang lịch sử đơn hàng | P2 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_019 | Authentication | Xác minh đăng xuất thành công khi truy cập /logout và redirect về /login | P2 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
+| TC_TTT_020 | Book Browsing | Xác minh phân trang danh sách sách hiển thị đúng số lượng khi có nhiều sách | P3 | Positive | | Trần Thanh Tịnh | 2026-03-24 | 2026-04-07 |
