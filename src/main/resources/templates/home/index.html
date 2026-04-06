@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookStore - Your Digital Library</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+</head>
+
+<body>
+    <th:block th:replace="~{layout::header}"></th:block>
+
+    <!-- Hero Section -->
+    <div class="hero-section"
+        style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9)), url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'); background-size: cover; background-position: center; padding: 5rem 0; color: white;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">
+                        Welcome to BookStore
+                    </h1>
+                    <p class="lead mb-4">
+                        Discover thousands of books across all genres. From bestsellers to hidden gems,
+                        find your next favorite read in our digital library.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a th:href="@{/books}" class="btn btn-light btn-lg">
+                            <i class="fas fa-book-open me-2"></i>Browse Books
+                        </a>
+                        <a sec:authorize="!isAuthenticated()" th:href="@{/register}"
+                            class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>Join Now
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <div class="hero-stats mt-4 mt-lg-0">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="bg-white bg-opacity-10 p-3 rounded">
+                                    <i class="fas fa-book fa-2x mb-2"></i>
+                                    <h3 class="fw-bold">1000+</h3>
+                                    <p class="mb-0">Books</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="bg-white bg-opacity-10 p-3 rounded">
+                                    <i class="fas fa-users fa-2x mb-2"></i>
+                                    <h3 class="fw-bold">500+</h3>
+                                    <p class="mb-0">Readers</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="bg-white bg-opacity-10 p-3 rounded">
+                                    <i class="fas fa-star fa-2x mb-2"></i>
+                                    <h3 class="fw-bold">4.8</h3>
+                                    <p class="mb-0">Rating</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <!-- Features Section -->
+        <div class="row text-center mb-5">
+            <div class="col-12 mb-4">
+                <h2 class="fw-bold">Why Choose BookStore?</h2>
+                <p class="text-muted">Experience the future of digital reading</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="bg-white p-4 rounded shadow-sm h-100">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-search fa-3x" style="color: var(--primary-color);"></i>
+                    </div>
+                    <h4>Easy Search</h4>
+                    <p class="text-muted">Find books instantly with our powerful search feature. Filter by category,
+                        author, or title.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="bg-white p-4 rounded shadow-sm h-100">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-shopping-cart fa-3x" style="color: var(--success-color);"></i>
+                    </div>
+                    <h4>Secure Shopping</h4>
+                    <p class="text-muted">Shop with confidence using our secure cart system and protected payment
+                        process.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="bg-white p-4 rounded shadow-sm h-100">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-bolt fa-3x" style="color: var(--warning-color);"></i>
+                    </div>
+                    <h4>Fast Delivery</h4>
+                    <p class="text-muted">Get your books delivered quickly with our efficient order processing system.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Preview -->
+        <div class="row mb-5">
+            <div class="col-12 text-center mb-4">
+                <h2 class="fw-bold">Popular Categories</h2>
+                <p class="text-muted">Explore books from your favorite genres</p>
+            </div>
+        </div>
+
+        <div class="row text-center mb-5">
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="category-card bg-white p-4 rounded shadow-sm h-100">
+                    <i class="fas fa-magic fa-3x mb-3" style="color: #9c27b0;"></i>
+                    <h5>Fiction</h5>
+                    <p class="text-muted small">Discover amazing stories</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="category-card bg-white p-4 rounded shadow-sm h-100">
+                    <i class="fas fa-brain fa-3x mb-3" style="color: #2196f3;"></i>
+                    <h5>Science</h5>
+                    <p class="text-muted small">Expand your knowledge</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="category-card bg-white p-4 rounded shadow-sm h-100">
+                    <i class="fas fa-landmark fa-3x mb-3" style="color: #795548;"></i>
+                    <h5>History</h5>
+                    <p class="text-muted small">Learn from the past</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="category-card bg-white p-4 rounded shadow-sm h-100">
+                    <i class="fas fa-code fa-3x mb-3" style="color: #ff5722;"></i>
+                    <h5>Technology</h5>
+                    <p class="text-muted small">Stay ahead of the curve</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="text-center mb-5">
+            <div class="bg-white p-5 rounded shadow-sm">
+                <h3 class="fw-bold mb-3">Ready to Start Reading?</h3>
+                <p class="text-muted mb-4">Join thousands of readers who have already discovered their next favorite
+                    book.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a th:href="@{/books}" class="btn btn-primary-modern btn-lg">
+                        <i class="fas fa-books me-2"></i>Explore Books
+                    </a>
+                    <a sec:authorize="!isAuthenticated()" th:href="@{/register}" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-user-plus me-2"></i>Create Account
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Testimonials -->
+        <div class="row mb-5" sec:authorize="!isAuthenticated()">
+            <div class="col-12 text-center mb-4">
+                <h2 class="fw-bold">What Our Readers Say</h2>
+                <p class="text-muted">Real feedback from our community</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="bg-white p-4 rounded shadow-sm">
+                    <div class="mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <p class="text-muted">"Amazing selection of books and super easy to use interface. Highly
+                        recommended!"</p>
+                    <strong>- Sarah Johnson</strong>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="bg-white p-4 rounded shadow-sm">
+                    <div class="mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <p class="text-muted">"Fast delivery and great customer service. My go-to bookstore now."</p>
+                    <strong>- Mike Chen</strong>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="bg-white p-4 rounded shadow-sm">
+                    <div class="mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <p class="text-muted">"Love the search functionality. I can find exactly what I'm looking for in
+                        seconds."</p>
+                    <strong>- Emily Davis</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="~{layout::footer}"></th:block>
+
+    <style>
+        .category-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .hero-stats .bg-white {
+            transition: transform 0.3s ease;
+        }
+
+        .hero-stats .bg-white:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</body>
+
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <title>Checkout - BookStore</title>
+</head>
+
+<body>
+    <th:block th:replace="~{layout::header}"></th:block>
+
+    <div class="container mt-4">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/cart}" class="text-decoration-none">Cart</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+            </ol>
+        </nav>
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-credit-card me-2"></i>Checkout</h1>
+            <a th:href="@{/cart}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Cart
+            </a>
+        </div>
+
+        <!-- Alerts -->
+        <div th:if="${error}" class="alert-error-modern" th:text="${error}"></div>
+        <div th:if="${success}" class="alert-success-modern" th:text="${success}"></div>
+
+        <div class="row">
+            <!-- Checkout Form -->
+            <div class="col-lg-8">
+                <div class="bg-white rounded shadow-sm p-4">
+                    <h3 class="mb-4"><i class="fas fa-user me-2"></i>Billing & Shipping Information</h3>
+
+                    <form th:action="@{/cart/checkout}" method="post">
+                        <!-- Customer Information -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="customerName" class="form-label">
+                                    <i class="fas fa-user me-1"></i>Full Name <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control form-control-modern" id="customerName"
+                                    name="customerName" th:value="${customerName}" required
+                                    placeholder="Enter your full name">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="customerEmail" class="form-label">
+                                    <i class="fas fa-envelope me-1"></i>Email Address <span class="text-danger">*</span>
+                                </label>
+                                <input type="email" class="form-control form-control-modern" id="customerEmail"
+                                    name="customerEmail" th:value="${customerEmail}" required
+                                    placeholder="Enter your email">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="customerPhone" class="form-label">
+                                    <i class="fas fa-phone me-1"></i>Phone Number <span class="text-danger">*</span>
+                                </label>
+                                <input type="tel" class="form-control form-control-modern" id="customerPhone"
+                                    name="customerPhone" th:value="${customerPhone}" required
+                                    placeholder="Enter your phone number">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-user-circle me-1"></i>Account
+                                </label>
+                                <input type="text" class="form-control form-control-modern" sec:authentication="name"
+                                    readonly style="background-color: #f8f9fa;">
+                            </div>
+                        </div>
+
+                        <!-- Shipping Address -->
+                        <div class="mb-4">
+                            <label for="shippingAddress" class="form-label">
+                                <i class="fas fa-map-marker-alt me-1"></i>Shipping Address <span
+                                    class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control form-control-modern" id="shippingAddress"
+                                name="shippingAddress" th:text="${shippingAddress}" rows="3" required
+                                placeholder="Enter complete shipping address including city, state, and postal code"></textarea>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="mb-4">
+                            <h5><i class="fas fa-credit-card me-2"></i>Payment Method</h5>
+                            <div class="border rounded p-3 bg-light">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="paymentMethod"
+                                        id="cashOnDelivery" value="cod" checked>
+                                    <label class="form-check-label" for="cashOnDelivery">
+                                        <i class="fas fa-money-bill-wave me-2"></i>
+                                        <strong>Cash on Delivery (COD)</strong>
+                                        <br>
+                                        <small class="text-muted">Pay when you receive your order</small>
+                                    </label>
+                                </div>
+
+                                <div class="form-check mt-3">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard"
+                                        value="card" disabled>
+                                    <label class="form-check-label text-muted" for="creditCard">
+                                        <i class="fas fa-credit-card me-2"></i>
+                                        <strong>Credit/Debit Card</strong>
+                                        <span class="badge bg-warning ms-2">Coming Soon</span>
+                                        <br>
+                                        <small>Online payment will be available soon</small>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terms & Conditions -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="agreeTerms" name="agreeTerms"
+                                    required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    I agree to the <a href="#" class="text-decoration-none"
+                                        onclick="alert('Terms and conditions page coming soon!')">Terms and
+                                        Conditions</a>
+                                    and <a href="#" class="text-decoration-none"
+                                        onclick="alert('Privacy policy page coming soon!')">Privacy Policy</a> <span
+                                        class="text-danger">*</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success-modern btn-lg">
+                                <i class="fas fa-lock me-2"></i>Place Order Securely
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="bg-white rounded shadow-sm p-4">
+                    <h4 class="mb-4"><i class="fas fa-receipt me-2"></i>Order Summary</h4>
+
+                    <!-- Items -->
+                    <div class="mb-3">
+                        <h6>Items (<span th:text="${totalQuantity}">0</span>)</h6>
+                        <div th:each="item : ${cart.cartItems}"
+                            class="d-flex justify-content-between align-items-center border-bottom py-2">
+                            <div>
+                                <div class="fw-bold" th:text="${item.bookName}">Book</div>
+                                <small class="text-muted">Qty: <span th:text="${item.quantity}">1</span> × $<span
+                                        th:text="${#numbers.formatDecimal(item.price, 0, 2)}">0.00</span></small>
+                            </div>
+                            <div class="fw-bold">$<span
+                                    th:text="${#numbers.formatDecimal(item.price * item.quantity, 0, 2)}">0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Totals -->
+                    <div class="border-top pt-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <span>$<span th:text="${#numbers.formatDecimal(totalPrice, 0, 2)}">0.00</span></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Shipping:</span>
+                            <span class="text-success">FREE</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tax (8%):</span>
+                            <span>$<span th:text="${#numbers.formatDecimal(totalPrice * 0.08, 0, 2)}">0.00</span></span>
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between fw-bold fs-5">
+                            <span>Total:</span>
+                            <span class="text-success">$<span
+                                    th:text="${#numbers.formatDecimal(totalPrice * 1.08, 0, 2)}">0.00</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Security Info -->
+                    <div class="mt-4 p-3 bg-light rounded">
+                        <div class="text-center">
+                            <i class="fas fa-shield-alt text-success fs-4"></i>
+                            <div class="mt-2">
+                                <strong>Secure Checkout</strong>
+                                <br>
+                                <small class="text-muted">Your information is protected</small>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <small>SSL encrypted</small>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <small>Money-back guarantee</small>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <small>24/7 customer support</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="~{layout::footer}"></th:block>
+</body>
+
+</html>

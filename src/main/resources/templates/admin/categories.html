@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head>
+    <th:block th:replace="~{admin/layout::head('Categories')}"></th:block>
+</head>
+
+<body>
+    <th:block th:replace="~{admin/layout::sidebar('categories')}"></th:block>
+
+    <div id="main-content">
+        <th:block th:replace="~{admin/layout::header('Categories Management')}"></th:block>
+
+        <div class="admin-body">
+
+            <!-- Flash Messages -->
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i><span th:text="${success}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i><span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div class="row g-4">
+                <!-- Categories Table -->
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm" style="border-radius:12px;">
+                        <div
+                            class="card-header bg-white border-0 pt-4 px-4 pb-0 d-flex justify-content-between align-items-center">
+                            <h6 class="fw-bold mb-0">
+                                <i class="fas fa-tags me-2 text-success"></i>
+                                All Categories
+                                <span class="badge bg-light text-dark ms-2"
+                                    th:text="${categories != null ? categories.size() : 0}">0</span>
+                            </h6>
+                            <button class="btn btn-admin-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#addCategoryModal">
+                                <i class="fas fa-plus me-1"></i>Add Category
+                            </button>
+                        </div>
+                        <div class="card-body px-4">
+                            <table class="table admin-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width:50px;">#</th>
+                                        <th>Category Name</th>
+                                        <th>Books Count</th>
+                                        <th style="width:140px;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="cat, stat : ${categories}">
+                                        <td class="text-muted" th:text="${stat.index + 1}">1</td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="rounded d-flex align-items-center justify-content-center"
+                                                    style="width:32px;height:32px;background:#eef2ff;">
+                                                    <i class="fas fa-tag" style="color:#4f46e5;font-size:13px;"></i>
+                                                </div>
+                                                <span class="fw-medium" th:text="${cat.name}">Category Name</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light text-dark"
+                                                th:text="${cat.books != null ? cat.books.size() : 0} + ' books'">0
+                                                books</span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1 btn-edit-cat"
+                                                th:attr="data-id=${cat.id}, data-name=${cat.name}" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger btn-delete-cat"
+                                                th:attr="data-id=${cat.id}, data-name=${cat.name}" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${categories == null or categories.empty}">
+                                        <td colspan="4" class="text-center py-5">
+                                            <i class="fas fa-tags fa-2x text-muted mb-2"></i>
+                                            <div class="text-muted">No categories yet. Add one!</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Category Card (Quick Sidebar) -->
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm" style="border-radius:12px;">
+                        <div class="card-header bg-white border-0 pt-4 px-4 pb-0">
+                            <h6 class="fw-bold mb-0">
+                                <i class="fas fa-plus-circle me-2 text-primary"></i>Quick Add Category
+                            </h6>
+                        </div>
+                        <div class="card-body px-4">
+                            <form th:action="@{/admin/categories/add}" method="post">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Category Name <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="name" required maxlength="50"
+                                        placeholder="e.g. Science Fiction">
+                                </div>
+                                <button type="submit" class="btn btn-admin-primary w-100">
+                                    <i class="fas fa-plus me-1"></i>Add Category
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Info Card -->
+                    <div class="card border-0 shadow-sm mt-4"
+                        style="border-radius:12px; border-left: 4px solid #4f46e5 !important;">
+                        <div class="card-body px-4 py-3">
+                            <h6 class="fw-bold mb-2"><i class="fas fa-info-circle me-2 text-primary"></i>Tips</h6>
+                            <ul class="small text-muted mb-0 ps-3">
+                                <li>Categories cannot be deleted if they have books assigned.</li>
+                                <li>Category names are case-insensitive during Excel import.</li>
+                                <li>New categories are auto-created during book import if not found.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== ADD CATEGORY MODAL ===== -->
+    <div class="modal fade" id="addCategoryModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content border-0">
+                <div class="modal-header modal-header-add">
+                    <h5 class="modal-title"><i class="fas fa-plus me-2"></i>Add Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form th:action="@{/admin/categories/add}" method="post">
+                    <div class="modal-body p-4">
+                        <label class="form-label fw-semibold">Category Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="name" required maxlength="50"
+                            placeholder="e.g. Science Fiction">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-admin-primary px-4">
+                            <i class="fas fa-save me-1"></i>Add
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== EDIT CATEGORY MODAL ===== -->
+    <div class="modal fade" id="editCategoryModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content border-0">
+                <div class="modal-header modal-header-edit">
+                    <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Edit Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form th:action="@{/admin/categories/edit}" method="post">
+                    <input type="hidden" name="id" id="editCatId">
+                    <div class="modal-body p-4">
+                        <label class="form-label fw-semibold">Category Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editCatName" name="name" required maxlength="50">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fas fa-save me-1"></i>Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== DELETE CATEGORY MODAL ===== -->
+    <div class="modal fade" id="deleteCatModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content border-0">
+                <div class="modal-header modal-header-delete">
+                    <h5 class="modal-title"><i class="fas fa-trash me-2"></i>Delete Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
+                    <p>Delete category <span class="fw-bold" id="deleteCatName">this category</span>?</p>
+                    <p class="text-muted small">Only works if no books are assigned to it.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteCatForm" method="post">
+                        <button type="submit" class="btn btn-danger px-4">
+                            <i class="fas fa-trash me-1"></i>Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="~{admin/layout::scripts}"></th:block>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.btn-edit-cat').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    document.getElementById('editCatId').value = this.dataset.id;
+                    document.getElementById('editCatName').value = this.dataset.name;
+                    new bootstrap.Modal(document.getElementById('editCategoryModal')).show();
+                });
+            });
+            document.querySelectorAll('.btn-delete-cat').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    document.getElementById('deleteCatName').textContent = '"' + this.dataset.name + '"';
+                    document.getElementById('deleteCatForm').action = '/admin/categories/delete/' + this.dataset.id;
+                    new bootstrap.Modal(document.getElementById('deleteCatModal')).show();
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

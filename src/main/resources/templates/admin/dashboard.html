@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head>
+    <th:block th:replace="~{admin/layout::head('Dashboard')}"></th:block>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <th:block th:replace="~{admin/layout::sidebar('dashboard')}"></th:block>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <th:block th:replace="~{admin/layout::header('Dashboard')}"></th:block>
+
+        <div class="admin-body">
+
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="stat-card bg-white">
+                        <div class="stat-icon" style="background:#eef2ff;">
+                            <i class="fas fa-book" style="color:#4f46e5;"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small">Total Books</div>
+                            <div class="fw-bold fs-3" th:text="${totalBooks}">0</div>
+                            <a href="/admin/books" class="text-decoration-none small text-primary">Manage →</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card bg-white">
+                        <div class="stat-icon" style="background:#f0fdf4;">
+                            <i class="fas fa-tags" style="color:#16a34a;"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small">Categories</div>
+                            <div class="fw-bold fs-3" th:text="${totalCategories}">0</div>
+                            <a href="/admin/categories" class="text-decoration-none small text-success">Manage →</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card bg-white">
+                        <div class="stat-icon" style="background:#fff7ed;">
+                            <i class="fas fa-receipt" style="color:#ea580c;"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small">Total Orders</div>
+                            <div class="fw-bold fs-3" th:text="${totalOrders}">0</div>
+                            <span class="small text-muted">All time</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card bg-white">
+                        <div class="stat-icon" style="background:#fdf4ff;">
+                            <i class="fas fa-users" style="color:#9333ea;"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small">Registered Users</div>
+                            <div class="fw-bold fs-3" th:text="${totalUsers}">0</div>
+                            <span class="small text-muted">Members</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Recent Books -->
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm" style="border-radius:12px;">
+                        <div
+                            class="card-header bg-white border-0 d-flex justify-content-between align-items-center pt-4 px-4 pb-0">
+                            <h6 class="fw-bold mb-0"><i class="fas fa-book me-2 text-primary"></i>Recent Books</h6>
+                            <a href="/admin/books" class="btn btn-sm btn-admin-primary">
+                                <i class="fas fa-list me-1"></i>All Books
+                            </a>
+                        </div>
+                        <div class="card-body px-4">
+                            <table class="table admin-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Author</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="book : ${recentBooks}">
+                                        <td class="fw-medium" th:text="${book.title}">Title</td>
+                                        <td th:text="${book.author}">Author</td>
+                                        <td>
+                                            <span class="badge-category"
+                                                th:text="${book.category != null ? book.category.name : 'N/A'}">Cat</span>
+                                        </td>
+                                        <td class="fw-semibold text-success"
+                                            th:text="'$' + ${#numbers.formatDecimal(book.price, 0, 2)}">$0</td>
+                                    </tr>
+                                    <tr th:if="${recentBooks == null or recentBooks.empty}">
+                                        <td colspan="4" class="text-center text-muted py-4">No books yet</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm h-100" style="border-radius:12px;">
+                        <div class="card-header bg-white border-0 pt-4 px-4 pb-0">
+                            <h6 class="fw-bold mb-0"><i class="fas fa-bolt me-2 text-warning"></i>Quick Actions</h6>
+                        </div>
+                        <div class="card-body px-4">
+                            <div class="d-grid gap-3">
+                                <a href="/admin/books" class="btn btn-admin-primary py-3">
+                                    <i class="fas fa-book me-2"></i>Manage Books
+                                </a>
+                                <a href="/admin/categories" class="btn btn-outline-success py-3">
+                                    <i class="fas fa-tags me-2"></i>Manage Categories
+                                </a>
+                                <a href="/admin/books/export" class="btn btn-outline-info py-3">
+                                    <i class="fas fa-file-excel me-2"></i>Export Books Excel
+                                </a>
+                                <a href="/admin/books/template" class="btn btn-outline-secondary py-3">
+                                    <i class="fas fa-download me-2"></i>Import Template
+                                </a>
+                                <a href="/books" class="btn btn-outline-warning py-3">
+                                    <i class="fas fa-store me-2"></i>View Store
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <th:block th:replace="~{admin/layout::scripts}"></th:block>
+</body>
+
+</html>

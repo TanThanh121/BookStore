@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <title>Edit Book - BookStore</title>
+</head>
+
+<body>
+    <th:block th:replace="~{layout::header}"></th:block>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="form-container">
+                    <h1 class="form-title">
+                        <i class="fas fa-edit me-2"></i>Edit Book
+                    </h1>
+
+                    <!-- Error Messages -->
+                    <div th:if="${errors}" class="alert-error-modern">
+                        <h4><i class="fas fa-exclamation-triangle me-2"></i>Please fix the following errors:</h4>
+                        <ul class="mb-0">
+                            <li th:each="error : ${errors}" th:text="${error}"></li>
+                        </ul>
+                    </div>
+
+                    <div th:if="${error}" class="alert-error-modern" th:text="${error}"></div>
+
+                    <form th:action="@{/books/edit}" th:object="${book}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" th:field="*{id}">
+                        <input type="hidden" th:field="*{image}">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="title">
+                                        <i class="fas fa-heading me-1"></i>Title <span class="text-danger">*</span>
+                                    </label>
+                                    <input class="form-control form-control-modern" type="text" th:field="*{title}"
+                                        id="title" required>
+                                    <span class="text-danger small" th:if="${#fields.hasErrors('title')}"
+                                        th:errors="*{title}"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="author">
+                                        <i class="fas fa-user-edit me-1"></i>Author <span class="text-danger">*</span>
+                                    </label>
+                                    <input class="form-control form-control-modern" type="text" th:field="*{author}"
+                                        id="author" required>
+                                    <span class="text-danger small" th:if="${#fields.hasErrors('author')}"
+                                        th:errors="*{author}"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="price">
+                                        <i class="fas fa-dollar-sign me-1"></i>Price <span class="text-danger">*</span>
+                                    </label>
+                                    <input class="form-control form-control-modern" type="number" step="0.01" min="0"
+                                        th:field="*{price}" id="price" required>
+                                    <span class="text-danger small" th:if="${#fields.hasErrors('price')}"
+                                        th:errors="*{price}"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="category">
+                                        <i class="fas fa-tags me-1"></i>Category <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-control form-control-modern" id="category" name="category.id"
+                                        required>
+                                        <option value="">-- Select Category --</option>
+                                        <option th:each="category : ${categories}" th:value="${category.getId()}"
+                                            th:text="${category.getName()}"
+                                            th:selected="${category.getId() == book.category.getId()}"></option>
+                                    </select>
+                                    <span class="text-danger small" th:if="${#fields.hasErrors('category')}"
+                                        th:errors="*{category}"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="description">
+                                <i class="fas fa-align-left me-1"></i>Description
+                            </label>
+                            <textarea class="form-control form-control-modern" th:field="*{description}"
+                                id="description" rows="4" placeholder="Enter book description (optional)"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-image me-1"></i>Book Cover Image
+                            </label>
+
+                            <!-- Current Image Display -->
+                            <div th:if="${book.image}" class="mb-3">
+                                <p class="text-muted">Current image:</p>
+                                <img th:src="@{'/books/images/' + ${book.image}}" alt="Current book cover"
+                                    class="image-preview" style="display: block;">
+                            </div>
+
+                            <div class="image-upload-container">
+                                <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">
+                                    <span th:if="${book.image}">Upload new image to replace current one</span>
+                                    <span th:unless="${book.image}">Click to select an image or drag and drop</span>
+                                </p>
+                                <input type="file" name="imageFile" id="imageFile" accept="image/*" class="form-control"
+                                    onchange="previewNewImage(this)">
+                                <img id="newImagePreview" class="image-preview mt-3" style="display: none;">
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary-modern btn-lg me-3">
+                                <i class="fas fa-save me-2"></i>Update Book
+                            </button>
+                            <a th:href="@{/books}" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>Back to List
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function previewNewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('newImagePreview').src = e.target.result;
+                    document.getElementById('newImagePreview').style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+
+    <th:block th:replace="~{layout::footer}"></th:block>
+</body>
+
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - BookStore</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+</head>
+
+<body>
+    <th:block th:replace="~{layout::header}"></th:block>
+
+    <div class="container mt-4">
+        <!-- Cart Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-shopping-cart me-2"></i>Your Shopping Cart</h1>
+            <a th:href="@{/books}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>Continue Shopping
+            </a>
+        </div>
+
+        <!-- Cart Items -->
+        <div th:if="${not #lists.isEmpty(cart.cartItems)}">
+            <div class="cart-container">
+                <!-- Cart Items List -->
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h3 class="mb-4">Items in Your Cart</h3>
+                        <div th:each="item : ${cart.cartItems}" class="cart-item">
+                            <div class="cart-item-info">
+                                <div class="cart-item-title" th:text="${item.bookName}">Book Name</div>
+                                <div class="text-muted small">Book ID: <span th:text="${item.bookId}"></span></div>
+                                <div class="cart-item-price">
+                                    $<span th:text="${#numbers.formatDecimal(item.price, 0, 2)}">0.00</span> each
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="input-group" style="width: 120px;">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        onclick="decreaseQuantity(this)" th:attr="data-id=${item.bookId}">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="number" min="1" max="99" th:value="${item.quantity}"
+                                        th:attr="data-id=${item.bookId}" class="form-control text-center quantity-input"
+                                        onchange="updateQuantity(this)">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        onclick="increaseQuantity(this)" th:attr="data-id=${item.bookId}">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+
+                                <div class="fw-bold text-success" style="min-width: 80px;">
+                                    $<span
+                                        th:text="${#numbers.formatDecimal(item.price * item.quantity, 0, 2)}">0.00</span>
+                                </div>
+
+                                <a class="btn btn-outline-danger btn-sm"
+                                    th:href="@{'/cart/removeFromCart/' + ${item.bookId}}"
+                                    onclick="return confirm('Remove this item from cart?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cart Summary -->
+                    <div class="col-lg-4">
+                        <div class="cart-total">
+                            <h4 class="mb-4"><i class="fas fa-receipt me-2"></i>Order Summary</h4>
+
+                            <div class="d-flex justify-content-between mb-3">
+                                <span>Items (<span th:text="${totalQuantity}">0</span>):</span>
+                                <span>$<span th:text="${#numbers.formatDecimal(totalPrice, 0, 2)}">0.00</span></span>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-3">
+                                <span>Shipping:</span>
+                                <span class="text-success">FREE</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-3">
+                                <span>Tax:</span>
+                                <span>$<span
+                                        th:text="${#numbers.formatDecimal(totalPrice * 0.08, 0, 2)}">0.00</span></span>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between mb-4 fw-bold fs-5">
+                                <span>Total:</span>
+                                <span class="text-success">
+                                    $<span th:text="${#numbers.formatDecimal(totalPrice * 1.08, 0, 2)}">0.00</span>
+                                </span>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-success-modern btn-lg" th:href="@{/cart/checkout}"
+                                    onclick="return confirm('Proceed to checkout?')">
+                                    <i class="fas fa-credit-card me-2"></i>Proceed to Checkout
+                                </a>
+
+                                <a class="btn btn-outline-danger" th:href="@{/cart/clearCart}"
+                                    onclick="return confirm('Clear all items from cart?')">
+                                    <i class="fas fa-trash me-2"></i>Clear Cart
+                                </a>
+                            </div>
+
+                            <!-- Security Badge -->
+                            <div class="text-center mt-4 p-3" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-shield-alt text-success fs-5"></i>
+                                <div class="small text-muted mt-2">
+                                    Secure checkout protected by 256-bit SSL encryption
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty Cart -->
+        <div th:if="${#lists.isEmpty(cart.cartItems)}" class="text-center py-5">
+            <div class="cart-container">
+                <i class="fas fa-shopping-cart fa-5x text-muted mb-4"></i>
+                <h3 class="mb-3">Your cart is empty</h3>
+                <p class="text-muted mb-4 lead">Looks like you haven't added any books to your cart yet.</p>
+                <a class="btn btn-primary-modern btn-lg" href="/books">
+                    <i class="fas fa-book-open me-2"></i>Start Shopping
+                </a>
+
+                <div class="row mt-5">
+                    <div class="col-md-4 text-center mb-3">
+                        <i class="fas fa-truck fa-2x text-primary mb-2"></i>
+                        <h5>Free Shipping</h5>
+                        <p class="text-muted small">On orders over $50</p>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <i class="fas fa-undo fa-2x text-success mb-2"></i>
+                        <h5>Easy Returns</h5>
+                        <p class="text-muted small">30-day return policy</p>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <i class="fas fa-headset fa-2x text-warning mb-2"></i>
+                        <h5>24/7 Support</h5>
+                        <p class="text-muted small">Customer service</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="~{layout::footer}"></th:block>
+
+    <script>
+        function updateQuantity(element) {
+            const bookId = element.getAttribute('data-id');
+            const quantity = element.value;
+
+            if (quantity < 1) {
+                element.value = 1;
+                return;
+            }
+
+            // Update cart via AJAX (implement this endpoint in your controller)
+            window.location.href = `/cart/updateCart/${bookId}/${quantity}`;
+        }
+
+        function increaseQuantity(button) {
+            const input = button.parentElement.querySelector('.quantity-input');
+            const currentValue = parseInt(input.value);
+            if (currentValue < 99) {
+                input.value = currentValue + 1;
+                updateQuantity(input);
+            }
+        }
+
+        function decreaseQuantity(button) {
+            const input = button.parentElement.querySelector('.quantity-input');
+            const currentValue = parseInt(input.value);
+            if (currentValue > 1) {
+                input.value = currentValue - 1;
+                updateQuantity(input);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <title>Order Details - BookStore</title>
+</head>
+
+<body>
+    <th:block th:replace="~{layout::header}"></th:block>
+
+    <div class="container mt-4">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/orders}" class="text-decoration-none">Order History</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Order #<span th:text="${order.id}">123</span>
+                </li>
+            </ol>
+        </nav>
+
+        <!-- Order Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="bg-white p-4 rounded shadow-sm">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="mb-2">
+                                <i class="fas fa-receipt me-2"></i>
+                                Order #<span th:text="${order.id}">123</span>
+                            </h1>
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-calendar me-1"></i>
+                                Placed on <span
+                                    th:text="${#dates.format(order.invoiceDate, 'EEEE, MMMM dd, yyyy')}">Date</span>
+                                at <span th:text="${#dates.format(order.invoiceDate, 'HH:mm')}">Time</span>
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="d-flex flex-column align-items-end">
+                                <span class="badge bg-success fs-6 mb-2">
+                                    <i class="fas fa-check me-1"></i>Order Completed
+                                </span>
+                                <h3 class="text-success mb-0">
+                                    $<span th:text="${#numbers.formatDecimal(order.price ?: 0, 0, 2)}">0.00</span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Order Items -->
+            <div class="col-lg-8">
+                <div class="bg-white rounded shadow-sm">
+                    <div class="p-4 border-bottom">
+                        <h4><i class="fas fa-list me-2"></i>Order Items</h4>
+                    </div>
+
+                    <div class="p-0">
+                        <div th:each="item, iterStat : ${order.itemInvoices}" class="p-4"
+                            th:classappend="${!iterStat.last} ? 'border-bottom'">
+
+                            <div class="row align-items-center">
+                                <!-- Book Image -->
+                                <div class="col-md-2 text-center">
+                                    <img th:if="${item.book.image}" th:src="@{'/books/images/' + ${item.book.image}}"
+                                        th:alt="${item.book.title}" class="img-fluid rounded"
+                                        style="max-height: 80px; object-fit: cover;">
+                                    <div th:unless="${item.book.image}"
+                                        class="bg-light d-flex align-items-center justify-content-center rounded"
+                                        style="width: 80px; height: 80px; margin: 0 auto;">
+                                        <i class="fas fa-book text-muted"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Book Details -->
+                                <div class="col-md-6">
+                                    <h5 class="mb-1">
+                                        <a th:href="@{'/books/detail/' + ${item.book.id}}" th:text="${item.book.title}"
+                                            class="text-decoration-none text-dark">Book Title</a>
+                                    </h5>
+                                    <p class="text-muted mb-1" th:text="'by ' + ${item.book.author}">by Author</p>
+                                    <span class="badge bg-secondary"
+                                        th:text="${item.book.category != null ? item.book.category.name : 'No Category'}">Category</span>
+                                </div>
+
+                                <!-- Quantity & Price -->
+                                <div class="col-md-2 text-center">
+                                    <div class="fw-bold">Qty: <span th:text="${item.quantity}">1</span></div>
+                                    <div class="text-muted">$<span
+                                            th:text="${#numbers.formatDecimal(item.book.price, 0, 2)}">0.00</span> each
+                                    </div>
+                                </div>
+
+                                <!-- Total -->
+                                <div class="col-md-2 text-end">
+                                    <h5 class="text-success mb-0">
+                                        $<span
+                                            th:text="${#numbers.formatDecimal(item.book.price * item.quantity, 0, 2)}">0.00</span>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="mt-4 text-center">
+                    <a th:href="@{/orders}" class="btn btn-outline-primary me-3">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Orders
+                    </a>
+                    <button class="btn btn-outline-success" onclick="alert('Feature coming soon!')">
+                        <i class="fas fa-download me-2"></i>Download Receipt
+                    </button>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="bg-white rounded shadow-sm p-4">
+                    <h4 class="mb-4"><i class="fas fa-calculator me-2"></i>Order Summary</h4>
+
+                    <!-- Summary Items -->
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Items (<span th:text="${order.itemInvoices.size()}">0</span>):</span>
+                        <span>$<span
+                                th:text="${#numbers.formatDecimal(order.itemInvoices.stream().mapToDouble(item -> item.book.price * item.quantity).sum(), 0, 2)}">0.00</span></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Shipping:</span>
+                        <span class="text-success">FREE</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Tax (8%):</span>
+                        <span>$<span
+                                th:text="${#numbers.formatDecimal((order.price ?: 0) * 0.08 / 1.08, 0, 2)}">0.00</span></span>
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between fw-bold fs-5 mb-4">
+                        <span>Total Paid:</span>
+                        <span class="text-success">$<span
+                                th:text="${#numbers.formatDecimal(order.price ?: 0, 0, 2)}">0.00</span></span>
+                    </div>
+
+                    <!-- Customer Info -->
+                    <div class="border-top pt-4">
+                        <h5><i class="fas fa-user me-2"></i>Customer Information</h5>
+                        <p class="mb-1"><strong>Name:</strong> <span th:text="${order.user.username}">Customer</span>
+                        </p>
+                        <p class="mb-1"><strong>Order ID:</strong> #<span th:text="${order.id}">123</span></p>
+                        <p class="mb-1"><strong>Order Date:</strong> <span
+                                th:text="${#dates.format(order.invoiceDate, 'MMM dd, yyyy')}">Date</span></p>
+                        <p class="mb-0"><strong>Status:</strong> <span class="badge bg-success">Completed</span></p>
+                    </div>
+
+                    <!-- Reorder Section -->
+                    <div class="border-top pt-4 mt-4 text-center">
+                        <h6><i class="fas fa-redo me-2"></i>Loved this order?</h6>
+                        <p class="text-muted small mb-3">Reorder the same books with one click</p>
+                        <button class="btn btn-primary-modern w-100" onclick="alert('Reorder feature coming soon!')">
+                            <i class="fas fa-shopping-cart me-2"></i>Reorder All Items
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="~{layout::footer}"></th:block>
+</body>
+
+</html>
