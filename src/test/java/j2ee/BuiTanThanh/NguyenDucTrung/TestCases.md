@@ -295,28 +295,28 @@
 
 ## Test Report
 
-| STT | Test Case ID | Chức năng | Mô tả ngắn | Bản chất | Độ ưu tiên | Phương thức kiểm thử | Kết quả mong muốn | Kết quả thực tế | Trạng thái | Ngày test | Ghi chú |
-|-----|-------------|-----------|------------|----------|------------|----------------------|-------------------|-----------------|------------|-----------|---------|
-| 1 | TC_NDT_001 | BookService | getAllBooks phân trang | Positive | P1 | `getAllBooks(0,5,"id")` | Trả về 5 sách | | | | |
-| 2 | TC_NDT_002 | BookService | getBookById tìm thấy | Positive | P1 | `getBookById(id)` | Optional chứa sách | | | | |
-| 3 | TC_NDT_003 | BookService | getBookById không tìm thấy | Negative | P1 | `getBookById(9999L)` | Optional.empty() | | | | |
-| 4 | TC_NDT_004 | BookService | addBook lưu thành công | Positive | P1 | `addBook(book)` | Sách được lưu vào DB | | | | |
-| 5 | TC_NDT_005 | BookService | updateBook cập nhật fields | Positive | P1 | `updateBook(book)` | Title được cập nhật | | | | |
-| 6 | TC_NDT_006 | BookService | updateBook không đổi ảnh nếu rỗng | Positive | P2 | `updateBook` nhánh image rỗng | Image giữ nguyên | | | | |
-| 7 | TC_NDT_007 | BookService | deleteBookById soft delete | Positive | P1 | `deleteBookById(id)` | active=false | | | | |
-| 8 | TC_NDT_008 | BookService | activateBookById | Positive | P2 | `activateBookById(id)` | active=true | | | | |
-| 9 | TC_NDT_009 | BookService | searchActiveBook | Positive | P2 | `searchActiveBook("Java")` | Chỉ sách active | | | | |
-| 10 | TC_NDT_010 | BookService | getBooksWithFilters | Positive | P2 | `getBooksWithFilters(catId, kw)` | Lọc đúng kết hợp | | | | |
-| 11 | TC_NDT_011 | BookService | deleteBookById ID không tồn tại | Negative | P2 | `deleteBookById(9999L)` | Không ném exception | | | | |
-| 12 | TC_NDT_012 | BookService | countBooks | Positive | P3 | `countBooks()` | Đúng tổng số | | | | |
-| 13 | TC_NDT_013 | CategoryService | getAllCategories | Positive | P1 | `getAllCategories()` | Danh sách đầy đủ | | | | |
-| 14 | TC_NDT_014 | CategoryService | addCategory | Positive | P1 | `addCategory(cat)` | Category được lưu | | | | |
-| 15 | TC_NDT_015 | CategoryService | updateCategory | Positive | P2 | `updateCategory(cat)` | Tên được cập nhật | | | | |
-| 16 | TC_NDT_016 | CategoryService | deleteCategory | Positive | P2 | `deleteCategory(id)` | Category bị xóa | | | | |
-| 17 | TC_NDT_017 | CartService | getCart tạo mới | Positive | P1 | `getCart(newSession)` | Cart mới rỗng | | | | |
-| 18 | TC_NDT_018 | CartService | getCart lấy cart cũ | Positive | P1 | `getCart(existingSession)` | Cart cũ | | | | |
-| 19 | TC_NDT_019 | CartService | getSumPrice | Positive | P1 | `getSumPrice(session)` | 130.000 | | | | |
-| 20 | TC_NDT_020 | CartService | getSumQuantity | Positive | P2 | `getSumQuantity(session)` | 5 | | | | |
+| TC ID | Test Case | Priority | Type | Pre-condition | Test Data | Expected Result | Test Script Design |
+|-------|-----------|----------|------|---------------|-----------|-----------------|-------------------|
+| TC_NDT_001 | Xác minh getAllBooks trả về đúng số lượng sách khi áp dụng phân trang hợp lệ | P1 | Positive | Có ≥6 sách trong DB | pageNo=0, pageSize=5, sortBy="id" | Trả về đúng 5 sách, bắt đầu từ bản ghi đầu tiên | Mock repository → call `getAllBooks(0,5,"id")` → assert size == 5 |
+| TC_NDT_002 | Xác minh getBookById trả về Optional chứa sách khi ID tồn tại và sách đang active | P1 | Positive | Sách active với id hợp lệ tồn tại trong DB | id hợp lệ (active=true) | Optional.of(book) với đầy đủ thông tin sách | Mock `findActiveByIdWithCategory(id)` → call `getBookById(id)` → assert isPresent() |
+| TC_NDT_003 | Xác minh getBookById trả về Optional.empty() khi ID không tồn tại trong DB | P1 | Negative | Không tồn tại sách với id=9999 | id=9999L | Optional.empty(), không ném ngoại lệ | Mock return empty → call `getBookById(9999L)` → assert isEmpty() |
+| TC_NDT_004 | Xác minh addBook lưu sách mới thành công khi dữ liệu đầu vào hợp lệ | P1 | Positive | Danh mục hợp lệ tồn tại trong DB | Book{ title, author, price, category } hợp lệ | Sách được lưu vào DB, `save()` được gọi đúng 1 lần | Mock `save(book)` → call `addBook(book)` → verify save called once |
+| TC_NDT_005 | Xác minh updateBook cập nhật đúng thông tin sách khi truyền dữ liệu mới | P1 | Positive | Sách với id tồn tại trong DB | Book{ id, newTitle, newPrice } | Title và price được cập nhật đúng trong DB | Mock findById + save → call `updateBook(book)` → assert title updated |
+| TC_NDT_006 | Xác minh updateBook giữ nguyên ảnh cũ khi trường image truyền vào là rỗng | P2 | Positive | Sách đã có ảnh tồn tại trong DB | Book{ id, image="" } | Trường image trong DB không bị thay đổi | Mock findById với image cũ → call `updateBook` image rỗng → assert image unchanged |
+| TC_NDT_007 | Xác minh deleteBookById chuyển sách sang inactive khi ID hợp lệ (soft delete) | P1 | Positive | Sách active với id tồn tại trong DB | id hợp lệ của sách active | Sách có active=false sau khi gọi | Mock findById + save → call `deleteBookById(id)` → assert active==false |
+| TC_NDT_008 | Xác minh activateBookById chuyển sách sang active thành công khi sách đang inactive | P2 | Positive | Sách inactive với id tồn tại trong DB | id hợp lệ của sách inactive | Sách có active=true sau khi gọi | Mock findById + save → call `activateBookById(id)` → assert active==true |
+| TC_NDT_009 | Xác minh searchActiveBook trả về đúng kết quả khi tìm theo từ khóa hợp lệ | P2 | Positive | Có sách active chứa từ khóa "Java" trong DB | keyword="Java" | Chỉ trả về sách active có title/author chứa "Java" | Mock `searchActive("Java")` → call `searchActiveBook("Java")` → assert results match |
+| TC_NDT_010 | Xác minh getBooksWithFilters lọc đúng sách khi kết hợp category và từ khóa | P2 | Positive | Dữ liệu nhiều sách, nhiều danh mục tồn tại | categoryId hợp lệ, keyword="Java" | Chỉ trả về sách khớp cả danh mục lẫn từ khóa | Mock repository filter → call `getBooksWithFilters(catId, kw)` → assert filtered list |
+| TC_NDT_011 | Xác minh deleteBookById không ném ngoại lệ khi ID không tồn tại trong DB | P2 | Negative | Không tồn tại sách với id=9999 | id=9999L | Không ném exception, DB không thay đổi | Mock findById return empty → call `deleteBookById(9999L)` → assert no exception thrown |
+| TC_NDT_012 | Xác minh countBooks trả về đúng tổng số sách hiện có trong hệ thống | P3 | Positive | Có N sách trong DB | None | Trả về N đúng với số sách thực tế | Mock `count()` return N → call `countBooks()` → assert result == N |
+| TC_NDT_013 | Xác minh getAllCategories trả về đầy đủ danh sách danh mục khi DB có dữ liệu | P1 | Positive | Có ≥1 danh mục trong DB | None | Danh sách đầy đủ tất cả danh mục, không rỗng | Mock `findAll()` → call `getAllCategories()` → assert list not empty |
+| TC_NDT_014 | Xác minh addCategory lưu danh mục mới thành công khi tên hợp lệ | P1 | Positive | None | Category{ name="Test Cat" } | Danh mục được lưu, `save()` được gọi đúng 1 lần | Mock `save(cat)` → call `addCategory(cat)` → verify save called once |
+| TC_NDT_015 | Xác minh updateCategory cập nhật tên danh mục thành công khi truyền tên mới | P2 | Positive | Danh mục với id tồn tại trong DB | Category{ id, name="Updated" } | Tên danh mục được cập nhật đúng trong DB | Mock save → call `updateCategory(cat)` → assert name == "Updated" |
+| TC_NDT_016 | Xác minh deleteCategory xóa danh mục thành công khi không có sách liên kết | P2 | Positive | Danh mục không có sách liên kết | id hợp lệ | Danh mục bị xóa khỏi DB, `deleteById()` được gọi | Mock `deleteById` → call `deleteCategory(id)` → verify deleteById called once |
+| TC_NDT_017 | Xác minh getCart tạo cart mới rỗng khi session chưa có cart | P1 | Positive | Session mới, chưa có cart | HttpSession mới không có cart | Cart mới rỗng được tạo và lưu vào session | Create new mock session → call `getCart(session)` → assert cart.isEmpty() |
+| TC_NDT_018 | Xác minh getCart trả về cart cũ khi session đã tồn tại cart | P1 | Positive | Session đã chứa cart với 2 sách | HttpSession có cart sẵn | Cart cũ với đúng items được trả về | Mock session with existing cart → call `getCart(session)` → assert same cart returned |
+| TC_NDT_019 | Xác minh getSumPrice tính tổng tiền đúng khi giỏ hàng có 2 sách | P1 | Positive | Cart có 2 sách giá 100 và 30 | Session có cart{ item(100), item(30) } | Trả về 130.0 | Mock session with cart → call `getSumPrice(session)` → assert == 130.0 |
+| TC_NDT_020 | Xác minh getSumQuantity tính tổng số lượng đúng khi giỏ hàng có nhiều mục | P2 | Positive | Cart có 2 sách qty 3 và 2 | Session có cart{ item(qty=3), item(qty=2) } | Trả về 5 | Mock session with cart → call `getSumQuantity(session)` → assert == 5 |
 
 **Tổng kết:**
 - Tổng số test case: **20**

@@ -296,28 +296,28 @@
 
 ## Test Report
 
-| STT | Test Case ID | Chức năng | Mô tả ngắn | Bản chất | Độ ưu tiên | Công cụ | Kết quả mong muốn | Kết quả thực tế | Trạng thái | Ngày test | Ghi chú |
-|-----|-------------|-----------|------------|----------|------------|---------|-------------------|-----------------|------------|-----------|---------|
-| 1 | TC_TTT_001 | Đăng nhập | Đăng nhập thành công | Positive | P1 | Selenium | Redirect trang chủ | | | | |
-| 2 | TC_TTT_002 | Đăng nhập | Sai mật khẩu | Negative | P1 | Selenium | Hiển thị lỗi xác thực | | | | |
-| 3 | TC_TTT_003 | Tìm kiếm | Tìm kiếm từ khóa hợp lệ | Positive | P2 | Selenium | Có kết quả phù hợp | | | | |
-| 4 | TC_TTT_004 | Lọc sách | Lọc theo danh mục | Positive | P2 | Selenium | Chỉ hiện đúng danh mục | | | | |
-| 5 | TC_TTT_005 | Sắp xếp | Giá tăng dần | Positive | P3 | Selenium | Thứ tự giá đúng | | | | |
-| 6 | TC_TTT_006 | Giỏ hàng | Thêm sách vào giỏ | Positive | P1 | Selenium | Sách trong giỏ | | | | |
-| 7 | TC_TTT_007 | Giỏ hàng | Cập nhật số lượng | Positive | P2 | Selenium | Số lượng & tổng tiền đúng | | | | |
-| 8 | TC_TTT_008 | Giỏ hàng | Xóa một sản phẩm | Positive | P2 | Selenium | Số lượng sản phẩm giảm 1 | | | | |
-| 9 | TC_TTT_009 | Giỏ hàng | Xóa toàn bộ giỏ | Positive | P3 | Selenium | Giỏ hàng trống | | | | |
-| 10 | TC_TTT_010 | Giỏ hàng | Tổng tiền tính đúng | Positive | P1 | Selenium | 130.000 VNĐ | | | | |
-| 11 | TC_TTT_011 | Thanh toán | Truy cập checkout có hàng | Positive | P1 | Selenium | Form checkout hiển thị | | | | |
-| 12 | TC_TTT_012 | Thanh toán | Checkout giỏ hàng trống | Negative | P1 | Selenium | Redirect /cart?error=empty | | | | |
-| 13 | TC_TTT_013 | Thanh toán | Đặt hàng thành công | Positive | P1 | Selenium | Redirect /orders/detail/{id} | | | | |
-| 14 | TC_TTT_014 | Thanh toán | Chưa đồng ý điều khoản | Negative | P2 | Selenium | Thông báo lỗi điều khoản | | | | |
-| 15 | TC_TTT_015 | Lịch sử đơn | Xem danh sách đơn hàng | Positive | P2 | Selenium | Hiển thị đơn hàng | | | | |
-| 16 | TC_TTT_016 | Lịch sử đơn | Xem chi tiết đơn hàng | Positive | P2 | Selenium | Hiển thị đầy đủ chi tiết | | | | |
-| 17 | TC_TTT_017 | Bảo mật | Xem đơn hàng người khác | Negative | P1 | Selenium | Hệ thống từ chối | | | | |
-| 18 | TC_TTT_018 | Lịch sử đơn | Tổng tiền đã chi | Positive | P2 | Selenium | Tổng tiền đúng | | | | |
-| 19 | TC_TTT_019 | Đăng xuất | Đăng xuất thành công | Positive | P2 | Selenium | Redirect /login | | | | |
-| 20 | TC_TTT_020 | Phân trang | Phân trang danh sách sách | Positive | P3 | Selenium | Trang 2 khác trang 1 | | | | |
+| TC ID | Test Case | Priority | Type | Pre-condition | Test Data | Expected Result | Test Script Design |
+|-------|-----------|----------|------|---------------|-----------|-----------------|-------------------|
+| TC_TTT_001 | Xác minh đăng nhập thành công khi nhập đúng username và password hợp lệ | P1 | Positive | Tài khoản user tồn tại trong hệ thống | username và password hợp lệ | URL không chứa /login, chuyển về trang chủ | Script: mở `/login` → điền credentials → click đăng nhập → verify URL != /login |
+| TC_TTT_002 | Xác minh đăng nhập bị từ chối khi nhập sai mật khẩu | P1 | Negative | Tài khoản user tồn tại trong hệ thống | username đúng, password sai | Trang /login hiển thị thông báo lỗi xác thực | Script: mở `/login` → nhập sai password → click đăng nhập → verify URL contains /login & error |
+| TC_TTT_003 | Xác minh tìm kiếm sách hiển thị kết quả phù hợp khi nhập từ khóa hợp lệ | P2 | Positive | Đã đăng nhập, có sách trong hệ thống | keyword="Sài Gòn" | Trang hiển thị kết quả tìm kiếm hoặc thông báo không tìm thấy | Script: login → `/books` → nhập keyword → click search → verify URL contains keyword= |
+| TC_TTT_004 | Xác minh lọc sách theo danh mục hiển thị đúng URL khi click link danh mục | P2 | Positive | Đã đăng nhập, có ít nhất 1 danh mục với sách | Danh mục đầu tiên trong danh sách | URL chứa tham số category= sau khi lọc | Script: login → `/books` → click link category → verify URL contains category= |
+| TC_TTT_005 | Xác minh sắp xếp sách theo giá tăng dần hiển thị đúng thứ tự khi chọn price_asc | P3 | Positive | Đã đăng nhập, có ≥2 sách trong hệ thống | sortBy=price_asc | Giá sách đầu tiên ≤ giá sách cuối cùng trên trang | Script: login → `/books?sortBy=price_asc` → lấy giá đầu & cuối → assert firstPrice ≤ lastPrice |
+| TC_TTT_006 | Xác minh thêm sách vào giỏ hàng thành công khi nhấn nút thêm | P1 | Positive | Đã đăng nhập, có sách trong hệ thống | Sách đầu tiên trong danh sách | Sách xuất hiện trong giỏ hàng tại /cart | Script: login → `/books` → click thêm vào giỏ (form.submit) → `/cart` → verify .cart-item |
+| TC_TTT_007 | Xác minh cập nhật số lượng sách trong giỏ thành công khi gọi updateCart | P2 | Positive | Đã đăng nhập, có sách trong giỏ hàng | bookId hợp lệ, quantity=3 | Số lượng sách trong giỏ được cập nhật thành 3 | Script: login → addToCart → `/cart/updateCart/{id}/3` → verify quantity input == 3 |
+| TC_TTT_008 | Xác minh xóa một sản phẩm khỏi giỏ thành công khi nhấn nút xóa | P2 | Positive | Đã đăng nhập, có ≥1 sách trong giỏ hàng | bookId cần xóa | Số lượng item trong giỏ giảm đi 1 | Script: login → addToCart → đếm items → removeFromCart/{id} → assert items.size() giảm |
+| TC_TTT_009 | Xác minh xóa toàn bộ giỏ hàng thành công khi gọi clearCart | P3 | Positive | Đã đăng nhập, có sách trong giỏ hàng | None | Giỏ hàng trống, hiển thị "Your cart is empty" | Script: login → addToCart → `/cart/clearCart` → verify page contains "cart is empty" |
+| TC_TTT_010 | Xác minh tổng tiền giỏ hàng hiển thị đúng định dạng khi có sách trong giỏ | P1 | Positive | Đã đăng nhập, có sách trong giỏ hàng | Sách có giá đã biết trong giỏ | Tổng tiền hiển thị có ký hiệu $ | Script: login → addToCart → `/cart` → verify .cart-total contains "$" |
+| TC_TTT_011 | Xác minh trang checkout hiển thị form billing khi giỏ hàng có sách | P1 | Positive | Đã đăng nhập, có sách trong giỏ hàng | None | URL là /cart/checkout, form Billing & Shipping hiển thị | Script: login → addToCart → `/cart/checkout` → verify URL & page contains "Billing" |
+| TC_TTT_012 | Xác minh checkout redirect về /cart khi giỏ hàng trống | P1 | Negative | Đã đăng nhập, giỏ hàng trống | None | Redirect về /cart?error=empty | Script: login → clearCart → `/cart/checkout` → verify URL contains /cart |
+| TC_TTT_013 | Xác minh đặt hàng thành công khi điền đầy đủ thông tin và đồng ý điều khoản | P1 | Positive | Đã đăng nhập, có sách trong giỏ hàng | customerName, email, phone, address hợp lệ, agreeTerms=true | Redirect về /orders/detail/{id} | Script: login → addToCart → checkout → điền form + tick terms → submit → verify URL contains /orders/detail |
+| TC_TTT_014 | Xác minh checkout bị từ chối khi không đồng ý điều khoản và điều kiện | P2 | Negative | Đã đăng nhập, có sách trong giỏ hàng | customerName, email, phone, address hợp lệ, agreeTerms=false | Trang hiển thị lỗi về điều khoản, không tạo đơn hàng | Script: login → addToCart → checkout → điền form, không tick terms → submit → verify error shown |
+| TC_TTT_015 | Xác minh trang lịch sử đơn hàng hiển thị đúng khi user đã đặt hàng | P2 | Positive | Đã đăng nhập, user đã có ít nhất 1 đơn hàng | None | Trang /orders hiển thị "Order History" với danh sách đơn | Script: login → đặt 1 đơn → `/orders` → verify page contains "Order History" |
+| TC_TTT_016 | Xác minh xem chi tiết đơn hàng thành công khi click link từ lịch sử đơn | P2 | Positive | Đã đăng nhập, user đã có ít nhất 1 đơn hàng | id đơn hàng hợp lệ của user | URL chứa /orders/detail/, trang hiển thị thông tin đơn hàng | Script: login → `/orders` → click link detail → verify URL contains /orders/detail/ |
+| TC_TTT_017 | Xác minh truy cập đơn hàng của người khác bị từ chối khi không phải chủ đơn | P1 | Negative | Đã đăng nhập bằng user thường, tồn tại đơn hàng id=1 của user khác | /orders/detail/1 (thuộc user khác) | Hệ thống từ chối, hiển thị trang lỗi hoặc redirect | Script: login user thường → `/orders/detail/1` → verify page contains error hoặc URL redirected |
+| TC_TTT_018 | Xác minh tổng tiền đã chi hiển thị đúng định dạng trên trang lịch sử đơn hàng | P2 | Positive | Đã đăng nhập, user đã có đơn hàng | None | Trang /orders hiển thị thông tin hợp lệ (có $ nếu có đơn) | Script: login → `/orders` → verify page contains "Order History" & "$" nếu totalSpent > 0 |
+| TC_TTT_019 | Xác minh đăng xuất thành công khi truy cập /logout và redirect về /login | P2 | Positive | Đã đăng nhập thành công | None | URL chứa /login sau logout, /profile redirect về /login | Script: login → `/logout` → verify URL contains /login → `/profile` → verify redirect /login |
+| TC_TTT_020 | Xác minh phân trang danh sách sách hiển thị đúng số lượng khi có nhiều sách | P3 | Positive | Đã đăng nhập, có sách trong hệ thống | pageNo=0, pageNo=1 (nếu có trang 2) | Trang 1 có tối đa 20 sách, trang 2 có sách nếu tồn tại | Script: login → `/books?pageNo=0` → đếm .book-card → assert ≤20; nếu có trang 2 → verify books > 0 |
 
 **Tổng kết:**
 - Tổng số test case: **20**

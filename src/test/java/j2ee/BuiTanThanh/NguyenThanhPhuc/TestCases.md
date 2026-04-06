@@ -259,28 +259,28 @@
 
 ## Test Report
 
-| STT | Test Case ID | Chức năng | Mô tả ngắn | Bản chất | Độ ưu tiên | Kết quả mong muốn | Kết quả thực tế | Trạng thái | Ngày test | Ghi chú |
-|-----|-------------|-----------|------------|----------|------------|-------------------|-----------------|------------|-----------|---------|
-| 1 | TC_NTP_001 | Đăng ký | Đăng ký thành công | Positive | P1 | Tạo tài khoản & redirect /login | | | | |
-| 2 | TC_NTP_002 | Đăng ký | Username đã tồn tại | Negative | P1 | Hiển thị lỗi trùng username | | | | |
-| 3 | TC_NTP_003 | Đăng ký | Bỏ trống password | Negative | P1 | Hiển thị lỗi "Password is required" | | | | |
-| 4 | TC_NTP_004 | Đăng ký | Email sai định dạng | Negative | P2 | Hiển thị lỗi định dạng email | | | | |
-| 5 | TC_NTP_005 | Đăng nhập | Đăng nhập thành công | Positive | P1 | Redirect về trang chủ | | | | |
-| 6 | TC_NTP_006 | Đăng nhập | Sai mật khẩu | Negative | P1 | Hiển thị lỗi xác thực | | | | |
-| 7 | TC_NTP_007 | Duyệt sách | Hiển thị danh sách sách | Positive | P1 | Hiển thị đầy đủ sách | | | | |
-| 8 | TC_NTP_008 | Tìm kiếm | Tìm kiếm với từ khóa hợp lệ | Positive | P2 | Hiển thị kết quả phù hợp | | | | |
-| 9 | TC_NTP_009 | Tìm kiếm | Từ khóa không tồn tại | Negative | P2 | Danh sách trống | | | | |
-| 10 | TC_NTP_010 | Lọc sách | Lọc theo danh mục | Positive | P2 | Chỉ hiện sách đúng danh mục | | | | |
-| 11 | TC_NTP_011 | Chi tiết sách | Xem chi tiết sách | Positive | P2 | Hiển thị đầy đủ thông tin | | | | |
-| 12 | TC_NTP_012 | Sắp xếp | Sắp xếp giá tăng dần | Positive | P3 | Danh sách đúng thứ tự giá | | | | |
-| 13 | TC_NTP_013 | Giỏ hàng | Thêm sách vào giỏ | Positive | P1 | Sách xuất hiện trong giỏ | | | | |
-| 14 | TC_NTP_014 | Giỏ hàng | Cập nhật số lượng | Positive | P2 | Số lượng và tổng tiền cập nhật | | | | |
-| 15 | TC_NTP_015 | Giỏ hàng | Xóa một sản phẩm | Positive | P2 | Sản phẩm bị xóa khỏi giỏ | | | | |
-| 16 | TC_NTP_016 | Giỏ hàng | Xóa toàn bộ giỏ | Positive | P3 | Giỏ hàng trống | | | | |
-| 17 | TC_NTP_017 | Thanh toán | Thanh toán thành công | Positive | P1 | Đơn hàng được tạo thành công | | | | |
-| 18 | TC_NTP_018 | Thanh toán | Giỏ hàng trống | Negative | P1 | Redirect /cart?error=empty | | | | |
-| 19 | TC_NTP_019 | Thanh toán | Không đồng ý điều khoản | Negative | P2 | Hiển thị lỗi điều khoản | | | | |
-| 20 | TC_NTP_020 | Lịch sử đơn hàng | Xem danh sách đơn hàng | Positive | P2 | Hiển thị đúng danh sách đơn hàng | | | | |
+| TC ID | Test Case | Priority | Type | Pre-condition | Test Data | Expected Result | Test Script Design |
+|-------|-----------|----------|------|---------------|-----------|-----------------|-------------------|
+| TC_NTP_001 | Xác minh đăng ký tài khoản thành công khi nhập đầy đủ thông tin hợp lệ | P1 | Positive | None | username="testuser01", password="Test@1234", email="test01@example.com" | Hệ thống tạo tài khoản và chuyển hướng về /login | Script: mở `/register` → điền form hợp lệ → nhấn Đăng ký → verify URL contains /login |
+| TC_NTP_002 | Xác minh đăng ký bị từ chối khi username đã tồn tại trong hệ thống | P1 | Negative | Username "admin" đã tồn tại trong DB | username="admin", password="Test@1234", email="newemail@example.com" | Hiển thị thông báo lỗi trùng username, không tạo tài khoản | Script: mở `/register` → nhập username trùng → nhấn Đăng ký → verify error message displayed |
+| TC_NTP_003 | Xác minh đăng ký bị từ chối khi để trống trường password bắt buộc | P1 | Negative | None | username="newuser02", email="new02@example.com", password="" | Hiển thị thông báo lỗi "Password is required", trang đăng ký tải lại | Script: mở `/register` → bỏ trống password → nhấn Đăng ký → verify error about password |
+| TC_NTP_004 | Xác minh đăng ký bị từ chối khi email không đúng định dạng | P2 | Negative | None | username="newuser03", password="Test@1234", email="invalidemail" | Hiển thị thông báo lỗi định dạng email không hợp lệ | Script: mở `/register` → nhập email sai định dạng → nhấn Đăng ký → verify email format error |
+| TC_NTP_005 | Xác minh đăng nhập thành công khi nhập đúng username và password | P1 | Positive | Tài khoản hợp lệ tồn tại trong hệ thống | username="testuser01", password="Test@1234" | Redirect về trang chủ, không ở lại /login | Script: mở `/login` → điền credentials → nhấn Đăng nhập → verify URL contains home |
+| TC_NTP_006 | Xác minh đăng nhập bị từ chối khi nhập sai mật khẩu | P1 | Negative | Tài khoản hợp lệ tồn tại trong hệ thống | username đúng, password="WrongPassword" | Trang /login hiển thị lỗi xác thực, URL vẫn là /login | Script: mở `/login` → nhập sai password → nhấn Đăng nhập → verify error message & URL = /login |
+| TC_NTP_007 | Xác minh trang danh sách sách hiển thị đầy đủ sách khi truy cập /books | P1 | Positive | Đã đăng nhập, có sách trong hệ thống | None | Trang hiển thị danh sách sách với đầy đủ thông tin | Script: login → mở `/books` → verify book cards displayed |
+| TC_NTP_008 | Xác minh tìm kiếm sách hiển thị kết quả phù hợp khi nhập từ khóa hợp lệ | P2 | Positive | Đã đăng nhập, có sách khớp từ khóa | keyword="Lập trình" | Hiển thị sách chứa từ khóa trong kết quả tìm kiếm | Script: login → `/books` → nhập keyword → search → verify results contain keyword |
+| TC_NTP_009 | Xác minh tìm kiếm hiển thị danh sách trống khi từ khóa không tồn tại | P2 | Negative | Đã đăng nhập | keyword="xyznotexist" | Trang hiển thị thông báo không tìm thấy hoặc danh sách trống | Script: login → `/books` → nhập keyword không tồn tại → verify empty result message |
+| TC_NTP_010 | Xác minh lọc sách theo danh mục chỉ hiển thị sách đúng danh mục khi chọn filter | P2 | Positive | Đã đăng nhập, có nhiều danh mục và sách | categoryId hợp lệ | Chỉ hiển thị sách thuộc danh mục đã chọn | Script: login → `/books` → click category filter → verify URL contains category= & results show |
+| TC_NTP_011 | Xác minh trang chi tiết sách hiển thị đầy đủ thông tin khi truy cập theo ID | P2 | Positive | Đã đăng nhập, sách hợp lệ tồn tại | id sách hợp lệ | Trang hiển thị title, author, price, description của sách | Script: login → `/books` → click tên sách → verify `/books/detail/{id}` & info displayed |
+| TC_NTP_012 | Xác minh sắp xếp sách theo giá tăng dần hiển thị đúng thứ tự khi chọn price_asc | P3 | Positive | Đã đăng nhập, có ≥2 sách | sortBy=price_asc | Sách đầu tiên có giá ≤ sách cuối trên trang | Script: login → `/books?sortBy=price_asc` → lấy giá đầu & cuối → assert firstPrice ≤ lastPrice |
+| TC_NTP_013 | Xác minh thêm sách vào giỏ hàng thành công khi nhấn nút thêm trên trang sách | P1 | Positive | Đã đăng nhập, có sách trong hệ thống | Sách đầu tiên trong danh sách | Sách xuất hiện trong giỏ hàng tại /cart | Script: login → `/books` → click thêm vào giỏ → `/cart` → verify sách trong danh sách giỏ |
+| TC_NTP_014 | Xác minh cập nhật số lượng sách trong giỏ thành công khi thay đổi quantity | P2 | Positive | Đã đăng nhập, có sách trong giỏ hàng | bookId hợp lệ, quantity mới = 3 | Số lượng và tổng tiền được cập nhật đúng | Script: login → addToCart → `/cart` → đổi quantity → verify số lượng & tổng tiền mới |
+| TC_NTP_015 | Xác minh xóa một sản phẩm khỏi giỏ hàng thành công khi nhấn nút xóa | P2 | Positive | Đã đăng nhập, có ≥1 sách trong giỏ hàng | None | Sản phẩm bị xóa, số lượng item trong giỏ giảm | Script: login → addToCart → `/cart` → click xóa → verify item removed from cart |
+| TC_NTP_016 | Xác minh xóa toàn bộ giỏ hàng hiển thị giỏ trống khi nhấn nút xóa tất cả | P3 | Positive | Đã đăng nhập, có sách trong giỏ hàng | None | Giỏ hàng trống sau khi xóa tất cả | Script: login → addToCart → clearCart → verify "Your cart is empty" |
+| TC_NTP_017 | Xác minh thanh toán thành công khi điền đầy đủ thông tin và đồng ý điều khoản | P1 | Positive | Đã đăng nhập, có sách trong giỏ hàng | customerName, email, phone, address hợp lệ, agreeTerms=true | Đơn hàng được tạo, redirect về /orders/detail/{id} | Script: login → addToCart → checkout → điền form + tick terms → submit → verify order created |
+| TC_NTP_018 | Xác minh checkout redirect về /cart khi giỏ hàng trống | P1 | Negative | Đã đăng nhập, giỏ hàng trống | None | Redirect về /cart?error=empty, không vào được checkout | Script: login → clearCart → mở `/cart/checkout` → verify redirect to /cart |
+| TC_NTP_019 | Xác minh checkout bị từ chối khi không đồng ý điều khoản và điều kiện | P2 | Negative | Đã đăng nhập, có sách trong giỏ hàng | Thông tin hợp lệ nhưng agreeTerms=false | Hiển thị thông báo lỗi về điều khoản, không tạo đơn hàng | Script: login → addToCart → checkout → điền form, không tick terms → submit → verify error |
+| TC_NTP_020 | Xác minh trang lịch sử đơn hàng hiển thị đúng danh sách khi user đã có đơn | P2 | Positive | Đã đăng nhập, user đã có ít nhất 1 đơn hàng | None | Trang /orders hiển thị danh sách đơn hàng đúng của user | Script: login → đặt 1 đơn → `/orders` → verify order list displayed for current user |
 
 **Tổng kết:**
 - Tổng số test case: **20**

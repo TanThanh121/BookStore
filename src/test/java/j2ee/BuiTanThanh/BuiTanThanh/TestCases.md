@@ -295,33 +295,25 @@
 
 ## Test Report
 
-| STT | Test Case ID | Chức năng | Mô tả ngắn | Bản chất | Độ ưu tiên | Công cụ | Kết quả mong muốn | Kết quả thực tế | Trạng thái | Ngày test | Ghi chú |
-|-----|-------------|-----------|------------|----------|------------|---------|-------------------|-----------------|------------|-----------|---------|
-| 1 | TC_BTT_001 | Đăng ký | Đăng ký thành công | Positive | P1 | Selenium | Redirect /login | | | | |
-| 2 | TC_BTT_002 | Đăng ký | Username đã tồn tại | Negative | P1 | Selenium | Thông báo lỗi trùng username | | | | |
-| 3 | TC_BTT_003 | Đăng ký | Email đã tồn tại | Negative | P1 | Selenium | Thông báo lỗi trùng email | | | | |
-| 4 | TC_BTT_004 | Đăng ký | Phone không hợp lệ | Negative | P2 | Selenium | Lỗi "Phone must be 10 characters" | | | | |
-| 5 | TC_BTT_005 | Admin | Xem dashboard admin | Positive | P1 | Selenium | Hiển thị số liệu thống kê | | | | |
-| 6 | TC_BTT_006 | Admin | Thêm sách mới | Positive | P1 | Selenium | Flash success, sách trong danh sách | | | | |
-| 7 | TC_BTT_007 | Admin | Thêm sách thiếu tiêu đề | Negative | P2 | Selenium | Thông báo lỗi | | | | |
-| 8 | TC_BTT_008 | Admin | Sửa thông tin sách | Positive | P1 | Selenium | Flash success, giá mới đúng | | | | |
-| 9 | TC_BTT_009 | Admin | Vô hiệu hóa sách | Positive | P1 | Selenium | Sách inactive | | | | |
-| 10 | TC_BTT_010 | Admin | Kích hoạt lại sách | Positive | P2 | Selenium | Sách active trở lại | | | | |
-| 11 | TC_BTT_011 | Admin | Tìm kiếm sách admin | Positive | P2 | Selenium | Kết quả đúng từ khóa | | | | |
-| 12 | TC_BTT_012 | Admin | Thêm danh mục | Positive | P1 | Selenium | Danh mục xuất hiện trong danh sách | | | | |
-| 13 | TC_BTT_013 | Admin | Sửa danh mục | Positive | P2 | Selenium | Tên danh mục được cập nhật | | | | |
-| 14 | TC_BTT_014 | Admin | Xóa danh mục trống | Positive | P2 | Selenium | Danh mục biến mất | | | | |
-| 15 | TC_BTT_015 | Hồ sơ | Xem hồ sơ người dùng | Positive | P2 | Selenium | Thông tin hiển thị đúng | | | | |
-| 16 | TC_BTT_016 | Hồ sơ | Cập nhật name/phone | Positive | P2 | Selenium | Flash success, thông tin mới | | | | |
-| 17 | TC_BTT_017 | Hồ sơ | Đổi mật khẩu thành công | Positive | P1 | Selenium | Flash success, đăng nhập được | | | | |
-| 18 | TC_BTT_018 | Hồ sơ | Đổi mật khẩu sai mật khẩu cũ | Negative | P1 | Selenium | Flash lỗi mật khẩu sai | | | | |
-| 19 | TC_BTT_019 | Bảo mật | User thường vào /admin | Negative | P1 | Selenium | Trang 403 Forbidden | | | | |
-| 20 | TC_BTT_020 | Bảo mật | Chưa đăng nhập vào /profile | Negative | P1 | Selenium | Redirect /login | | | | |
-
-**Tổng kết:**
-- Tổng số test case: **20**
-- Positive: **13**
-- Negative: **7**
-- Pass: ___
-- Fail: ___
-- Blocked: ___
+| TC ID | Test Case | Priority | Type | Pre-condition | Test Data | Expected Result | Test Script Design |
+|-------|-----------|----------|------|---------------|-----------|-----------------|-------------------|
+| TC_BTT_001 | Xác minh đăng ký tài khoản thành công khi nhập thông tin hợp lệ | P1 | Positive | None | username: "autouser01", password: "Auto@1234", email: "autouser01@test.com", phone: "0901234567" | URL chuyển thành `/login`, tài khoản được tạo thành công | Script: mở `/register` → điền form → click Đăng ký → verify URL contains `/login` |
+| TC_BTT_002 | Xác minh đăng ký bị từ chối khi username đã tồn tại | P1 | Negative | Tồn tại username "admin" trong hệ thống | username: "admin", password: "Auto@1234", email: "newunique@test.com" | Trang `/register` hiển thị thông báo lỗi trùng username | Script: mở `/register` → điền username trùng → click Đăng ký → verify error message displayed |
+| TC_BTT_003 | Xác minh đăng ký bị từ chối khi email đã được sử dụng | P1 | Negative | Tồn tại email trong hệ thống | username: "newunique01", email đã tồn tại, password: "Auto@1234" | Trang hiển thị thông báo lỗi trùng email, form được tải lại | Script: mở `/register` → điền email đã dùng → click Đăng ký → verify error message |
+| TC_BTT_004 | Xác minh đăng ký bị từ chối khi số điện thoại không đủ 10 chữ số | P2 | Negative | None | username: "newunique02", phone: "123", password: "Auto@1234", email: "u02@test.com" | Hiển thị lỗi "Phone must be 10 characters" | Script: mở `/register` → điền phone ngắn → click Đăng ký → verify error message |
+| TC_BTT_005 | Xác minh dashboard admin hiển thị đúng số liệu thống kê khi đăng nhập admin | P1 | Positive | Tài khoản admin hợp lệ | username: "az1533", password: "Thanh121" | Dashboard hiển thị totalBooks, totalCategories, totalOrders, totalUsers với giá trị số | Script: login admin → truy cập `/admin` → verify stat cards visible |
+| TC_BTT_006 | Xác minh thêm sách mới thành công khi điền đầy đủ thông tin hợp lệ | P1 | Positive | Đã đăng nhập admin, tồn tại ít nhất 1 danh mục | title: "Auto Test Book", author: "Auto Author", price: 99000, category: hợp lệ | Flash message "added successfully!", sách xuất hiện trong danh sách | Script: login admin → `/admin/books` → điền form → submit → verify flash & book in list |
+| TC_BTT_007 | Xác minh thêm sách bị từ chối khi thiếu trường tiêu đề | P2 | Negative | Đã đăng nhập admin | title: "", author: "Auto Author", price: 99000 | Hiển thị thông báo lỗi, không thêm sách vào danh sách | Script: login admin → `/admin/books` → để trống title → submit → verify error |
+| TC_BTT_008 | Xác minh cập nhật thông tin sách thành công khi thay đổi giá | P1 | Positive | Đã đăng nhập admin, tồn tại ít nhất 1 sách | price mới: 150000 | Flash message "updated successfully!", giá mới hiển thị đúng trong danh sách | Script: login admin → `/admin/books` → click Sửa → thay giá → lưu → verify flash & new price |
+| TC_BTT_009 | Xác minh vô hiệu hóa sách thành công khi nhấn nút xóa trên sách đang active | P1 | Positive | Đã đăng nhập admin, tồn tại sách đang active | Sách đầu tiên trong danh sách | Sách chuyển trạng thái inactive, nút Kích hoạt xuất hiện | Script: login admin → `/admin/books` → ghi nhận tên sách → click Xóa → verify status inactive |
+| TC_BTT_010 | Xác minh kích hoạt lại sách thành công khi sách đang ở trạng thái inactive | P2 | Positive | Đã đăng nhập admin, tồn tại sách inactive | Sách đang inactive | Sách chuyển thành trạng thái active, hiển thị lại trên trang người dùng | Script: login admin → `/admin/books` → tìm sách inactive → click Kích hoạt → verify status active |
+| TC_BTT_011 | Xác minh tìm kiếm sách hiển thị đúng kết quả khi nhập từ khóa hợp lệ | P2 | Positive | Đã đăng nhập admin, tồn tại sách trong hệ thống | Từ khóa: "Lập trình" | Chỉ hiển thị sách có tên hoặc tác giả chứa từ khóa | Script: login admin → `/admin/books` → nhập keyword → Enter → verify results match keyword |
+| TC_BTT_012 | Xác minh thêm danh mục mới thành công khi điền tên hợp lệ | P1 | Positive | Đã đăng nhập admin | Tên danh mục: "Auto Category" | Danh mục "Auto Category" xuất hiện trong danh sách | Script: login admin → `/admin/categories` → điền tên → click Thêm → verify category in list |
+| TC_BTT_013 | Xác minh cập nhật tên danh mục thành công khi nhập tên mới | P2 | Positive | Đã đăng nhập admin, tồn tại ít nhất 1 danh mục | Tên mới: "Updated Category" | Tên danh mục được cập nhật thành "Updated Category" trong danh sách | Script: login admin → `/admin/categories` → click Sửa → thay tên → lưu → verify new name |
+| TC_BTT_014 | Xác minh xóa danh mục thành công khi danh mục không có sách liên kết | P2 | Positive | Đã đăng nhập admin, tạo sẵn danh mục trống | Danh mục vừa tạo không có sách | Danh mục biến mất khỏi danh sách | Script: login admin → tạo danh mục mới → click Xóa → xác nhận → verify category removed |
+| TC_BTT_015 | Xác minh hồ sơ người dùng hiển thị đúng thông tin khi đăng nhập | P2 | Positive | Tài khoản user hợp lệ đã đăng nhập | Tài khoản user thường | Trang hiển thị đúng username, email, tổng đơn hàng và tổng tiền đã chi | Script: login user → `/profile` → verify username, email, order stats visible |
+| TC_BTT_016 | Xác minh cập nhật hồ sơ thành công khi thay đổi tên và số điện thoại | P2 | Positive | Tài khoản user hợp lệ đã đăng nhập | name: "New Name", phone: "0987654321" | Flash message "Profile updated successfully!", thông tin mới hiển thị trên profile | Script: login user → `/profile` → điền name & phone → submit → verify flash & new info |
+| TC_BTT_017 | Xác minh đổi mật khẩu thành công khi nhập đúng mật khẩu hiện tại | P1 | Positive | Tài khoản user hợp lệ đã đăng nhập | currentPassword: đúng, newPassword: "NewPass@123", confirmPassword: "NewPass@123" | Flash message "Password changed successfully!", đăng nhập lại được bằng mật khẩu mới | Script: login user → `/profile` → điền form đổi mật khẩu → submit → verify flash → re-login |
+| TC_BTT_018 | Xác minh đổi mật khẩu bị từ chối khi nhập sai mật khẩu hiện tại | P1 | Negative | Tài khoản user hợp lệ đã đăng nhập | currentPassword: "WrongCurrentPass", newPassword: "NewPass@123" | Hiển thị lỗi "Current password is incorrect", mật khẩu không thay đổi | Script: login user → `/profile` → điền sai currentPassword → submit → verify error message |
+| TC_BTT_019 | Xác minh truy cập admin bị từ chối khi đăng nhập bằng tài khoản không có role ADMIN | P1 | Negative | Tài khoản user thường đã đăng nhập | Tài khoản không có role ADMIN | Hệ thống chuyển hướng về `/error/403` hoặc hiển thị trang Forbidden | Script: login user thường → truy cập `/admin` → verify URL contains `/403` or page shows Forbidden |
+| TC_BTT_020 | Xác minh redirect về trang login khi truy cập trang cần xác thực chưa đăng nhập | P1 | Negative | Chưa đăng nhập (session không tồn tại) | None | URL chuyển thành `/login`, nội dung trang bảo mật không hiển thị | Script: đảm bảo chưa đăng nhập → truy cập `/profile` → verify URL contains `/login` |

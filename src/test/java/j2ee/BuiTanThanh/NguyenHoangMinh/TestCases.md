@@ -293,28 +293,28 @@
 
 ## Test Report
 
-| STT | Test Case ID | Chức năng | Mô tả ngắn | Bản chất | Độ ưu tiên | Phương thức kiểm thử | Kết quả mong muốn | Kết quả thực tế | Trạng thái | Ngày test | Ghi chú |
-|-----|-------------|-----------|------------|----------|------------|----------------------|-------------------|-----------------|------------|-----------|---------|
-| 1 | TC_NHM_001 | UserService | save mã hóa mật khẩu | Positive | P1 | `save(user)` | Password được BCrypt | | | | |
-| 2 | TC_NHM_002 | UserService | findByUsername tìm thấy | Positive | P1 | `findByUsername("admin")` | Optional.of(user) | | | | |
-| 3 | TC_NHM_003 | UserService | findByUsername không tìm thấy | Negative | P1 | `findByUsername("nonexistent")` | Optional.empty() | | | | |
-| 4 | TC_NHM_004 | UserService | setDefaultRole gán role USER | Positive | P1 | `setDefaultRole(username)` | User có role USER | | | | |
-| 5 | TC_NHM_005 | UserService | updateProfile thành công | Positive | P1 | `updateProfile(...)` | Thông tin cập nhật | | | | |
-| 6 | TC_NHM_006 | UserService | updateProfile email trùng | Negative | P2 | `updateProfile` email trùng | IllegalArgumentException | | | | |
-| 7 | TC_NHM_007 | UserService | changePassword thành công | Positive | P1 | `changePassword(...)` | Password cập nhật | | | | |
-| 8 | TC_NHM_008 | UserService | changePassword sai mật khẩu cũ | Negative | P1 | `changePassword` wrong current | IllegalArgumentException | | | | |
-| 9 | TC_NHM_009 | UserService | changePassword xác nhận sai | Negative | P1 | `changePassword` confirm != new | IllegalArgumentException | | | | |
-| 10 | TC_NHM_010 | UserService | countUsers | Positive | P3 | `countUsers()` | Đúng tổng số | | | | |
-| 11 | TC_NHM_011 | InvoiceService | getInvoicesByUsername có đơn | Positive | P1 | `getInvoicesByUsername(user)` | Danh sách 3 đơn | | | | |
-| 12 | TC_NHM_012 | InvoiceService | getInvoicesByUsername chưa đặt | Negative | P2 | `getInvoicesByUsername(newUser)` | Danh sách rỗng | | | | |
-| 13 | TC_NHM_013 | InvoiceService | getInvoiceById tìm thấy | Positive | P1 | `getInvoiceById(id)` | Optional.of(invoice) | | | | |
-| 14 | TC_NHM_014 | InvoiceService | getInvoiceById không tìm thấy | Negative | P1 | `getInvoiceById(9999L)` | Optional.empty() | | | | |
-| 15 | TC_NHM_015 | InvoiceService | calculateInvoiceTotal | Positive | P1 | `calculateInvoiceTotal(inv)` | 350.000 | | | | |
-| 16 | TC_NHM_016 | InvoiceService | countInvoices | Positive | P3 | `countInvoices()` | Đúng tổng số | | | | |
-| 17 | TC_NHM_017 | Validator | ValidUsernameValidator hợp lệ | Positive | P2 | `isValid("validuser123")` | true | | | | |
-| 18 | TC_NHM_018 | Validator | ValidUsernameValidator ký tự đặc biệt | Negative | P2 | `isValid("invalid@!")` | false | | | | |
-| 19 | TC_NHM_019 | Validator | ValidCategoryIdValidator hợp lệ | Positive | P2 | `isValid(category)` | true | | | | |
-| 20 | TC_NHM_020 | Validator | ValidCategoryIdValidator null | Negative | P2 | `isValid(null)` | false | | | | |
+| TC ID | Test Case | Priority | Type | Pre-condition | Test Data | Expected Result | Test Script Design |
+|-------|-----------|----------|------|---------------|-----------|-----------------|-------------------|
+| TC_NHM_001 | Xác minh save mã hóa mật khẩu bằng BCrypt trước khi lưu user mới vào DB | P1 | Positive | None | User{ password="plaintext123" } | Mật khẩu trong DB là chuỗi BCrypt, khác với "plaintext123" | Mock encoder + repo → call `save(user)` → assert password != "plaintext123" & BCryptMatches |
+| TC_NHM_002 | Xác minh findByUsername trả về Optional chứa user khi username tồn tại | P1 | Positive | User "admin" tồn tại trong DB | username="admin" | Optional.of(user) với username=="admin" | Mock `findByUsername("admin")` → call `findByUsername("admin")` → assert isPresent() |
+| TC_NHM_003 | Xác minh findByUsername trả về Optional.empty() khi username không tồn tại | P1 | Negative | Không tồn tại user "nonexistent" | username="nonexistent" | Optional.empty(), không ném ngoại lệ | Mock return empty → call `findByUsername("nonexistent")` → assert isEmpty() |
+| TC_NHM_004 | Xác minh setDefaultRole gán đúng role USER cho user mới khi chưa có role | P1 | Positive | User tồn tại trong DB chưa có role | username của user mới | User được gán role USER trong DB | Mock findByUsername + roleRepo → call `setDefaultRole(username)` → assert role == USER |
+| TC_NHM_005 | Xác minh updateProfile cập nhật thông tin thành công khi dữ liệu hợp lệ | P1 | Positive | User tồn tại trong DB | userId, name mới, phone mới, email mới hợp lệ | Thông tin profile được cập nhật đúng trong DB | Mock findById + save → call `updateProfile(...)` → assert fields updated |
+| TC_NHM_006 | Xác minh updateProfile ném IllegalArgumentException khi email đã được dùng bởi user khác | P2 | Negative | Email đã tồn tại cho user khác trong DB | userId, email đã tồn tại | Ném `IllegalArgumentException` với thông báo lỗi email trùng | Mock findByEmail return other user → call `updateProfile` → assert throws IllegalArgumentException |
+| TC_NHM_007 | Xác minh changePassword cập nhật mật khẩu thành công khi nhập đúng mật khẩu hiện tại | P1 | Positive | User tồn tại, biết mật khẩu hiện tại | currentPassword đúng, newPassword="NewPass@123", confirmPassword="NewPass@123" | Mật khẩu mới được mã hóa và lưu vào DB | Mock encoder.matches=true + save → call `changePassword(...)` → assert new password encoded |
+| TC_NHM_008 | Xác minh changePassword ném IllegalArgumentException khi nhập sai mật khẩu hiện tại | P1 | Negative | User tồn tại trong DB | currentPassword sai, newPassword="NewPass@123" | Ném `IllegalArgumentException` "Current password is incorrect" | Mock encoder.matches=false → call `changePassword` → assert throws IllegalArgumentException |
+| TC_NHM_009 | Xác minh changePassword ném IllegalArgumentException khi mật khẩu xác nhận không khớp | P1 | Negative | User tồn tại trong DB | currentPassword đúng, newPassword="New@123", confirmPassword="Different@123" | Ném `IllegalArgumentException` do confirm không khớp | Mock encoder.matches=true → call `changePassword` confirm!=new → assert throws IllegalArgumentException |
+| TC_NHM_010 | Xác minh countUsers trả về đúng tổng số người dùng trong hệ thống | P3 | Positive | Có N user trong DB | None | Trả về N đúng với số user thực tế | Mock `count()` return N → call `countUsers()` → assert result == N |
+| TC_NHM_011 | Xác minh getInvoicesByUsername trả về đúng danh sách đơn hàng khi user đã có đơn | P1 | Positive | User đã có 3 đơn hàng trong DB | username của user có 3 đơn | Danh sách 3 invoice đúng | Mock repo → call `getInvoicesByUsername(user)` → assert list.size() == 3 |
+| TC_NHM_012 | Xác minh getInvoicesByUsername trả về danh sách rỗng khi user chưa đặt hàng | P2 | Negative | User mới chưa có đơn hàng nào | username của user mới | Danh sách rỗng, không ném ngoại lệ | Mock return empty list → call `getInvoicesByUsername(newUser)` → assert isEmpty() |
+| TC_NHM_013 | Xác minh getInvoiceById trả về Optional chứa invoice khi ID tồn tại | P1 | Positive | Invoice với id hợp lệ tồn tại trong DB | id hợp lệ | Optional.of(invoice) với đúng thông tin đơn hàng | Mock `findById(id)` → call `getInvoiceById(id)` → assert isPresent() |
+| TC_NHM_014 | Xác minh getInvoiceById trả về Optional.empty() khi ID không tồn tại | P1 | Negative | Không tồn tại invoice với id=9999 | id=9999L | Optional.empty(), không ném ngoại lệ | Mock return empty → call `getInvoiceById(9999L)` → assert isEmpty() |
+| TC_NHM_015 | Xác minh calculateInvoiceTotal tính đúng tổng tiền khi invoice có nhiều item | P1 | Positive | Invoice với 3 item giá 100, 150, 100 | Invoice{ items[ price×qty ] } | Trả về 350.0 | Mock invoice with items → call `calculateInvoiceTotal(inv)` → assert == 350.0 |
+| TC_NHM_016 | Xác minh countInvoices trả về đúng tổng số đơn hàng trong hệ thống | P3 | Positive | Có N invoice trong DB | None | Trả về N đúng với số invoice thực tế | Mock `count()` return N → call `countInvoices()` → assert result == N |
+| TC_NHM_017 | Xác minh ValidUsernameValidator trả về true khi username chỉ chứa chữ và số | P2 | Positive | None | username="validuser123" | Trả về true, không có lỗi validation | Call `isValid("validuser123", context)` → assert result == true |
+| TC_NHM_018 | Xác minh ValidUsernameValidator trả về false khi username chứa ký tự đặc biệt | P2 | Negative | None | username="invalid@!" | Trả về false, vi phạm constraint | Call `isValid("invalid@!", context)` → assert result == false |
+| TC_NHM_019 | Xác minh ValidCategoryIdValidator trả về true khi category hợp lệ tồn tại trong DB | P2 | Positive | Danh mục với id hợp lệ tồn tại | category object hợp lệ | Trả về true, category hợp lệ | Mock repo return category → call `isValid(category, context)` → assert result == true |
+| TC_NHM_020 | Xác minh ValidCategoryIdValidator trả về false khi category là null | P2 | Negative | None | category=null | Trả về false, không ném NullPointerException | Call `isValid(null, context)` → assert result == false |
 
 **Tổng kết:**
 - Tổng số test case: **20**
